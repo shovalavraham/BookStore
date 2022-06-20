@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useReducer } from "react";
 import { useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { initBook } from "../../actions/book.action";
 import Loader from "../../components/shared/loader/Loader.component";
 import bookReducer, { BOOK_INITIAL_STATE } from "../../reducers/book.reducer";
@@ -11,6 +11,7 @@ import './book-page.styles.css';
 import { useContext } from "react";
 
 const BookPage = () => {
+    const navigate = useNavigate();
     const authContextValue = useContext(AuthContext);
 
     const [isLoading, setIsLoading] = useState(true);
@@ -31,11 +32,15 @@ const BookPage = () => {
     
                 const responseObj = await response.json();
                 const book = responseObj.data;
+
+                if(!book) {
+                    throw new Error();
+                }
     
                 dispatchBookState(initBook(book));
     
             } catch (error) {
-                alert("Something went wrong!");
+                navigate('*');
             }
         };
 
