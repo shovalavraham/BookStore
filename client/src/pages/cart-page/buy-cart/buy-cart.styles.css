@@ -1,0 +1,22 @@
+.buy-cart-container {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.checkout {
+    margin-left: 0;
+    padding: 12px 40px;
+    background-color: rgb(0, 96, 213);
+}
+
+.checkout:hover {
+    background-color: rgb(1, 83, 184);
+}
+
+.total-price {
+    margin-right: 110px;
+    font-weight: 700;
+    font-size: 28px;
+}

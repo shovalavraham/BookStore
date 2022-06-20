@@ -1,0 +1,51 @@
+.cart-container {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.cart-book-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border: 1px solid rgb(173, 173, 173);
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.619);
+}
+
+.books-details {
+    display: flex;
+}
+
+.title-author {
+    margin-left: 16px;
+    margin-right: 8px;
+}
+
+.cart-book-title {
+    font-size: 18px;
+}
+
+.cart-book-author {
+    font-size: 14px;
+}
+
+.price-remove {
+    display: flex;
+    align-items: center;
+}
+
+.cart-book-price {
+    font-weight: 800;
+    font-size: 20PX;
+}
+
+.remove-btn {
+    background-color: #b60d1e;
+}
+
+.remove-btn:hover {
+    background-color: rgb(220, 0, 0);
+}

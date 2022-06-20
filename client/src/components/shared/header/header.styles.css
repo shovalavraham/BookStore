@@ -1,0 +1,33 @@
+header {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color:rgb(75, 30, 103);
+    color: black;
+    box-shadow: 10px 0px 5px 5px gray;
+}
+
+.header-title {
+    margin-left: 8px;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+}
+
+.hamburger-btn {
+    height: 40px;
+    margin-right: 8px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.bar {
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    margin: 6px 2px;
+}

@@ -1,0 +1,57 @@
+.sidebar-background {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.523);
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 300px;
+    background-color:rgb(75, 30, 103);
+}
+
+.close-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 30px;
+    margin: 3px;
+    cursor: pointer;
+}
+
+.sidebar-links {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-link {
+    color: white;
+    text-decoration: none;
+    margin: 16px 0;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.not-visible {
+    visibility: hidden;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 16px 0;
+}

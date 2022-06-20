@@ -1,0 +1,29 @@
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin: 8px 16px;
+}
+
+.input-label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-input {
+    margin-top: 4px;
+    padding: 8px 5px;
+    border: 1px solid rgb(169, 167, 167);
+    border-radius: 5px;
+}
+
+.form-input:focus {
+    outline: none;
+   border: 2px solid rgb(127, 0, 127);
+}
+
+.error-message {
+    font-weight: 600;
+    font-size: 12px;
+    margin-top: 2px;
+    color: red;
+}
