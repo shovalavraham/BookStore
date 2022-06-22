@@ -1,6 +1,6 @@
 import Admin from "../models/admin.model.js";
 
-export const createAdmin = async (req, res) => {
+export const createAdmin = async (req, res, next) => {
     const data = req.body;
     const admin = new Admin(data);
 
@@ -18,15 +18,14 @@ export const createAdmin = async (req, res) => {
             message: "Admin was created successfully",
         });
     } catch (error) {
-        res.status(400).send({
-            status: 400,
-            statusText: 'Bad request',
-            message: "",
-        })
+        error.status = 400;
+        error.statusText = 'Bad request';
+        error.message = '';
+        next(error);
     }
 };
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
 
@@ -47,15 +46,14 @@ export const login = async (req, res) => {
         });
         
     } catch (error) {
-        res.status(400).send({
-            status: 400,
-            statusText: 'Bad request',
-            message: "",
-        })
+        error.status = 400;
+        error.statusText = 'Bad request';
+        error.message = '';
+        next(error);
     }
 };
 
-export const logout = async (req, res) => {
+export const logout = async (req, res, next) => {
     const admin = req.admin;
     const token =req.token;
 
@@ -71,10 +69,9 @@ export const logout = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).send({
-            status: 500,
-            statusText: 'Internal Server Error',
-            message: '',
-        });
+        error.status = 500;
+        error.statusText = 'Internal Server Error';
+        error.message = '';
+        next(error);
     }
 };

@@ -1,7 +1,7 @@
 import Cart from "../models/cart.model.js";
 import Book from "../models/book.model.js";
 
-export const getCart = async (req, res) => {
+export const getCart = async (req, res, next) => {
     const userID = req.user._id;
 
     try {
@@ -18,16 +18,14 @@ export const getCart = async (req, res) => {
         });
 
     } catch (error) {
-    
-        res.status(500).send({
-            status: 500,
-            statusText: "Internal Server Error",
-            message: "",
-        });
+        error.status = 500;
+        error.statusText = 'Internal Server Error';
+        error.message = '';
+        next(error);
     }
 };
 
-export const updateCart = async (req, res) => {
+export const updateCart = async (req, res, next) => {
     const bookID = req.body.bookID;
     const userID = req.user._id;
 
@@ -48,15 +46,14 @@ export const updateCart = async (req, res) => {
         });
         
     } catch (error) {
-        res.status(500).send({
-            status: 500,
-            statusText: 'Internal Server Error',
-            message: "",
-        });
+        error.status = 500;
+        error.statusText = 'Internal Server Error';
+        error.message = '';
+        next(error);
     }
 };
 
-export const addBookToCart = async (req, res) => {
+export const addBookToCart = async (req, res, next) => {
     const bookID = req.body.bookID;
     const user = req.user;
     
@@ -76,15 +73,14 @@ export const addBookToCart = async (req, res) => {
         })
         
     } catch (error) {
-        res.status(400).send({
-            status: 400,
-            statusText: 'Bad request',
-            message: "",
-        })
+        error.status = 400;
+        error.statusText = 'Bad request';
+        error.message = '';
+        next(error);
     }
 };
 
-export const buyCart = async (req, res) => {
+export const buyCart = async (req, res, next) => {
     const userID = req.user._id;
 
     try {
@@ -100,15 +96,14 @@ export const buyCart = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).send({
-            status: 500,
-            statusText: 'Internal Server Error',
-            message: "",
-        });
+        error.status = 500;
+        error.statusText = 'Internal Server Error';
+        error.message = '';
+        next(error);
     }
 };
 
-export const updateQuantity = async (req, res) => {
+export const updateQuantity = async (req, res, next) => {
     const userID = req.user._id;
     const bookID = req.body.bookID;
     const quantity = req.body.quantity;
@@ -128,10 +123,9 @@ export const updateQuantity = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).send({
-            status: 500,
-            statusText: 'Internal Server Error',
-            message: "",
-        });
+        error.status = 500;
+        error.statusText = 'Internal Server Error';
+        error.message = '';
+        next(error);
     }
 };

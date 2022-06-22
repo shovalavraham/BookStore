@@ -1,7 +1,7 @@
 import Cart from "../models/cart.model.js";
 import User from "../models/user.model.js";
 
-export const createUser = async (req, res) => {
+export const createUser = async (req, res, next) => {
     const data = req.body;
     const user = new User(data);
     const cart = new Cart({
@@ -23,11 +23,10 @@ export const createUser = async (req, res) => {
             message: "User was created successfully",
         });
     } catch (error) {
-        res.status(400).send({
-            status: 400,
-            statusText: 'Bad request',
-            message: "",
-        })
+        error.status = 400;
+        error.statusText = 'Bad request'
+        error.message = '';
+        next(error);
     }
 };
 

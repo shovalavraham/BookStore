@@ -1,6 +1,6 @@
 import Book from "../models/book.model.js";
 
-export const getBookByID = async (req, res) => {
+export const getBookByID = async (req, res ,next) => {
     const bookID = req.params.bookID;
 
     try {
@@ -14,15 +14,14 @@ export const getBookByID = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).send({
-            status: 500,
-            statusText: "Internal Server Error",
-            message: "",
-        });
+        error.status = 500;
+        error.statusText = 'Internal Server Error';
+        error.message = '';
+        next(error);
     }
 };
 
-export const getAllBooks = async (req, res) => {
+export const getAllBooks = async (req, res, next) => {
     try {
         const books = await Book.find();
 
@@ -34,15 +33,14 @@ export const getAllBooks = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).send({
-            status: 500,
-            statusText: "Internal Server Error",
-            message: "",
-        });
+        error.status = 500;
+        error.statusText = 'Internal Server Error';
+        error.message = '';
+        next(error);
     }
 };
 
-export const createBook = async (req, res) => {
+export const createBook = async (req, res, next) => {
     const data = req.body;
     const book = new Book(data);
 
@@ -56,15 +54,14 @@ export const createBook = async (req, res) => {
             message: "Book was created successfully",
         });
     } catch (error) {
-        res.status(400).send({
-            status: 400,
-            statusText: 'Bad request',
-            message: '',
-        })
+        error.status = 400;
+        error.statusText = 'Bad request';
+        error.message = '';
+        next(error);
     }
 };
 
-export const updateBook = async (req, res) => {
+export const updateBook = async (req, res, next) => {
     const bookID = req.params.bookID;
     const data = req.body;
 
@@ -79,10 +76,9 @@ export const updateBook = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).send({
-            status: 500,
-            statusText: 'Internal Server Error',
-            message: '',
-        });
+        error.status = 500;
+        error.statusText = 'Internal Server Error';
+        error.message = '';
+        next(error);
     }
 };
