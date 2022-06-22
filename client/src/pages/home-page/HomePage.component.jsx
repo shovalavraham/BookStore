@@ -1,27 +1,28 @@
-import React, { useEffect, useState, useReducer } from 'react';
-import { initBooks } from '../../actions/books.action';
+import React, { useEffect, useState } from 'react';
 import BookCard from '../../components/book-card/BookCard.component';
 import Loader from '../../components/shared/loader/Loader.component';
-import booksReducer, { BOOKS_INITIAL_STATE } from '../../reducers/books.reducer';
+import environments from '../../environments/environments';
 import './home-page.styles.css';
 
 const HomePage = () => {
     const [isLoading, setIsLoading] = useState(true);
-    const [booksState, dispatchBooksState] = useReducer(booksReducer, BOOKS_INITIAL_STATE);
+    const [booksState, setBooksState] = useState(null);
 
     useEffect(() => {
         const getBooks = async () => {
             try {
-                const response = await fetch('http://localhost:3000/books', {
-                    method: 'GET',
-                });
+                const response = await fetch(`${environments.API_URL}/books`);
 
                 if(!response.status) {
                     throw new Error();
                 }
 
                 const responseObj = await response.json();
-                dispatchBooksState(initBooks(responseObj.data));
+                setBooksState(responseObj.data);
+
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
     
             } catch (error) {
                 alert("Something went wrong!");
@@ -30,9 +31,6 @@ const HomePage = () => {
 
         getBooks();
 
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
     }, []);
 
     return isLoading ? (
@@ -40,9 +38,9 @@ const HomePage = () => {
     ) : (
         <main className='home-page'>
             <div className='books-container'>
-                {booksState.books.map((book) => {
+                {booksState.map((book) => {
                     return (
-                        <BookCard title={book.title} author={book.author} bookCover={book.bookCover} id={book._id}/>
+                        <BookCard key={book._id} title={book.title} author={book.author} bookCover={book.bookCover} id={book._id}/>
                     );
                 })}
             </div>

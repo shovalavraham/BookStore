@@ -62,7 +62,7 @@ export const addBookToCart = async (req, res) => {
     
     try {
         const cart = await Cart.findOne({ownerID: user._id});
-        cart.books.push({bookID: bookID});
+        cart.books.push({bookID: bookID, quantity: 1});
 
         await cart.populate('books.bookID');
 
@@ -97,6 +97,34 @@ export const buyCart = async (req, res) => {
             statusText: "Accepted",
             data: cart,
             message: "The purchase was made successfully",
+        });
+
+    } catch (error) {
+        res.status(500).send({
+            status: 500,
+            statusText: 'Internal Server Error',
+            message: "",
+        });
+    }
+};
+
+export const updateQuantity = async (req, res) => {
+    const userID = req.user._id;
+    const bookID = req.body.bookID;
+    const quantity = req.body.quantity;
+
+    try {
+        const cart = await Cart.findOne({ownerID: userID});
+        const book = cart.books.find(book => book.bookID.toString() === bookID);
+        book.quantity = quantity;
+
+        await cart.save();
+
+        res.status(202).send({
+            status: 202,
+            statusText: "Accepted",
+            data: cart,
+            message: "Book quantity was update successfully",
         });
 
     } catch (error) {

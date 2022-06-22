@@ -1,30 +1,25 @@
 import React from "react";
-import { useState } from "react";
-import { useReducer } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import { initBook } from "../../actions/book.action";
 import Loader from "../../components/shared/loader/Loader.component";
-import bookReducer, { BOOK_INITIAL_STATE } from "../../reducers/book.reducer";
 import { AuthContext } from '../../contexts/Auth.context.js';
 import './book-page.styles.css';
 import { useContext } from "react";
+import environments from '../../environments/environments.js'
 
 const BookPage = () => {
     const navigate = useNavigate();
     const authContextValue = useContext(AuthContext);
 
     const [isLoading, setIsLoading] = useState(true);
-    const [bookState, dispatchBookState] = useReducer(bookReducer, BOOK_INITIAL_STATE);
+    const [bookState, setBookState] = useState(null);
 
     const {id} = useParams();
 
     useEffect(() => {
         const getBook = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/books/${id}`, {
-                    method: 'GET',
-                });
+                const response = await fetch(`${environments.API_URL}/books/${id}`);
     
                 if(!response.status) {
                     throw new Error();
@@ -37,7 +32,7 @@ const BookPage = () => {
                     throw new Error();
                 }
     
-                dispatchBookState(initBook(book));
+                setBookState(book);
     
             } catch (error) {
                 navigate('*');
@@ -60,11 +55,11 @@ const BookPage = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:3000/cart/add-to-cart', {
+            const response = await fetch(`${environments.API_URL}/cart/add-to-cart`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': token,
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({
                     'bookID': id,

@@ -4,6 +4,8 @@ import { useContext } from "react";
 import { initCart, updateCart } from "../../../actions/cart.action.js";
 import { AuthContext } from "../../../contexts/Auth.context.js";
 import { CartContext } from "../../../contexts/Cart.context.js";
+import environments from '../../../environments/environments.js'
+import QuantityBtn from "../quantity-btn/QuantityBtn.component.jsx";
 import './cart-container.styles.css';
 
 const CartContainer = () => {
@@ -15,10 +17,9 @@ const CartContainer = () => {
 
         const getCart = async () => {
             try {
-                const response = await fetch('http://localhost:3000/cart', {
-                    method: 'GET',
+                const response = await fetch(`${environments.API_URL}/cart`, {
                     headers : {
-                        'Authorization': token, 
+                        'Authorization': `Bearer ${token}`, 
                     },
                 });
 
@@ -41,16 +42,16 @@ const CartContainer = () => {
 
     const handleRemove = async (event) => {
         const eventAttributes = event.target.attributes;
-        const bookID = eventAttributes.getNamedItem('bookID').value;
-        const bookPrice = eventAttributes.getNamedItem('bookPrice').value;
+        const bookID = eventAttributes.getNamedItem('bookid').value;
+        const bookPrice = eventAttributes.getNamedItem('bookprice').value;
         const token = authContextValue.userToken;
 
         try {
-           const response = await fetch('http://localhost:3000/cart', {
+           const response = await fetch(`${environments.API_URL}/cart`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': token,
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({
                     'bookID': bookID
@@ -72,11 +73,36 @@ const CartContainer = () => {
         }
     };
 
+    const updateQuantity = async (bookID, quantity) => {
+        const token = authContextValue.userToken;
+
+        try {
+            const response = await fetch(`${environments.API_URL}/cart/update-quantity`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    bookID: bookID,
+                    quantity: quantity,
+                }),
+            });
+
+            if(response.status !== 202) {
+                throw new Error();
+            }
+
+        } catch (error) {
+            alert("Something went wrong!");
+        }
+    }
+
     return (
         <div className="cart-container">
-            {cartContextValue.cartState.cart.books.map((book) => {
+            {cartContextValue.cartState.books.map((book) => {
                 return (
-                    <div className="cart-book-container">
+                    <div className="cart-book-container" key={book.bookID._id}>
                         <div className="books-details">
                             <img src={book.bookID.bookCover} alt="book cover" width="90" height="120"/>
 
@@ -87,8 +113,9 @@ const CartContainer = () => {
                         </div>
 
                         <div className="price-remove">
-                            <span className="cart-book-price">{`${book.bookID.price}$`}</span>
-                            <button className="btn-design remove-btn" bookID={book.bookID._id} bookPrice={book.bookID.price} onClick={handleRemove}>Remove</button>
+                            <div className="cart-book-price">{`${book.bookID.price}$`}</div>
+                            <QuantityBtn value={book.quantity} bookID={book.bookID._id} updateQuantity={updateQuantity} price={book.bookID.price}/>
+                            <button className="btn-design remove-btn" bookid={book.bookID._id} bookprice={book.bookID.price} onClick={handleRemove}>Remove</button>
                         </div>
                     </div>
                 );

@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { checkoutCart } from "../../../actions/cart.action";
 import { AuthContext } from "../../../contexts/Auth.context";
 import { CartContext } from "../../../contexts/Cart.context";
+import environments from "../../../environments/environments";
 import './buy-cart.styles.css';
 
 const BuyCart = () => {
@@ -13,10 +14,10 @@ const BuyCart = () => {
         const token = authContextValue.userToken;
 
         try {
-            const response = await fetch('http://localhost:3000/cart/checkout', {
+            const response = await fetch(`${environments.API_URL}/cart/checkout`, {
                 method: 'PATCH',
                 headers: {
-                    'Authorization': token,
+                    'Authorization': `Bearer ${token}`,
                 }
             });
 
@@ -38,7 +39,7 @@ const BuyCart = () => {
     return (
         <div className="buy-cart-container">
             <button className="btn-design checkout" onClick={handleCheckout}>Checkout</button>
-            <span className="total-price">{`${cartContextValue.cartState.price}$`}</span>
+            <div className="total-price">{`${cartContextValue.cartState.price}$`}</div>
         </div>
     );
 };

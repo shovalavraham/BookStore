@@ -3,9 +3,9 @@ const loginActionTypes = {
     UPDATE_PASSWORD: 'UPDATE_PASSWORD',
 };
 
-export const updateEmail = (value, isValid, message) => {
+export const updateAction = (type, value, isValid, message) => {
     const action = {
-        type: loginActionTypes.UPDATE_EMAIL,
+        type: type,
         payload: {
             value: value,
             isValid: isValid,
@@ -15,18 +15,5 @@ export const updateEmail = (value, isValid, message) => {
 
     return action;
 };
-
-export const updatePassword = (value, isValid, message) => {
-    const action = {
-        type: loginActionTypes.UPDATE_PASSWORD,
-        payload: {
-            value: value,
-            isValid: isValid,
-            message: message,
-        }
-    };
-
-    return action;
-}
 
 export default loginActionTypes;

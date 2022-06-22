@@ -2,6 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from '../../../contexts/Auth.context';
+import environments from '../../../environments/environments.js'
 import './sidebar.styles.css';
 
 const Sidebar = (props) => {
@@ -11,14 +12,14 @@ const Sidebar = (props) => {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://localhost:3000/users/logout', {
+            const response = await fetch(`${environments.API_URL}/users/logout`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': token,
+                    'Authorization': `Bearer ${token}`,
                 },
             });
-
-            if(!response.status) {
+            
+            if(response.status !== 200) {
                 throw new Error();
             }
 

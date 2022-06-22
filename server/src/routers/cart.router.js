@@ -12,4 +12,6 @@ router.post('/cart/add-to-cart', userAuth, cartController.addBookToCart);
 
 router.patch('/cart/checkout', userAuth, cartController.buyCart);
 
+router.patch('/cart/update-quantity', userAuth, cartController.updateQuantity);
+
 export default router;

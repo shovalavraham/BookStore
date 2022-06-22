@@ -1,10 +1,7 @@
 import cartActionTypes from "../actions/cart.action";
 
 export const CART_INITIAL_STATE = {
-    cart : {
-        ownerID: '',
-        books: [],
-    },
+    books: [],
     price: 0,
 };
 
@@ -15,11 +12,11 @@ const cartReducer = (state, action) => {
             let price = 0;
             
             cart.books.map((book) => {
-                price += book.bookID.price;
+                price += book.bookID.price * book.quantity;
             });
 
             const updatedState = {
-                cart: cart,
+                books: cart.books,
                 price: price.toFixed(2),
             };
 
@@ -30,7 +27,7 @@ const cartReducer = (state, action) => {
             const price = action.payload.price - action.payload.bookPrice;
 
             const updatedState = {
-                cart: cart,
+                books: cart.books,
                 price: price.toFixed(2),
             };
 
@@ -40,8 +37,28 @@ const cartReducer = (state, action) => {
             const cart = action.payload.cart;
 
             const updatedState = {
-                cart: cart,
+                books: cart.books,
                 price: 0,
+            };
+
+            return updatedState;
+        }
+        case cartActionTypes.UPDATE_PRICE: {
+            const cart = action.payload.cart;
+            const bookPrice = action.payload.bookPrice;
+            const sign = action.payload.sign;
+            let price = +cart.price;
+
+            if(sign === '+') {
+                price += bookPrice;
+            }
+            else {
+                price -= bookPrice;
+            }
+        
+            const updatedState = {
+                books: cart.books,
+                price: price.toFixed(2),
             };
 
             return updatedState;

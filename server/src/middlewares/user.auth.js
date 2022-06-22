@@ -4,7 +4,10 @@ import jwt from "jsonwebtoken";
 
 const userAuth = async (req, res, next) => {
     try {
-        const token = req.header('Authorization');
+        const authorization = req.header('Authorization');
+        if (!authorization) throw new Error();
+
+        const token = authorization.replace('Bearer ', '');
         if (!token) throw new Error();
 
         const data = jwt.verify(token, enviroments.TOKEN_SECRET);

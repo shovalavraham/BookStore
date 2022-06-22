@@ -12,24 +12,25 @@ import BookPage from "./pages/book-page/BookPage.component";
 import CartContextProvider from "./contexts/Cart.context";
 
 const App = () => {
-  return ( <BrowserRouter>
-  <AuthContextProvider>
-    <CartContextProvider>
-      <Header/>
+  return ( 
+    <BrowserRouter>
+      <AuthContextProvider>
+        <CartContextProvider>
+          <Header/>
 
-        <Routes>
-          <Route path="" element={<HomePage/>}/>
-          <Route path="/cart" element={<CartPage/>}/>
-          <Route path="/login" element={<LoginPage/>}/>
-          <Route path="/signup" element={<SignupPage/>}/>
-          <Route path={"books/:id"} element={<BookPage/>}/>
-          <Route path="*" element={<PageNotFound/>}/>
-        </Routes>
+          <Routes>
+            <Route path="" element={<HomePage/>}/>
+            <Route path="cart" element={<CartPage/>}/>
+            <Route path="login" element={<LoginPage/>}/>
+            <Route path="signup" element={<SignupPage/>}/>
+            <Route path="books/:id" element={<BookPage/>}/>
+            <Route path="*" element={<PageNotFound/>}/>
+          </Routes>
 
-        <Footer/>
-      </CartContextProvider> 
-    </AuthContextProvider>
-  </BrowserRouter>
+          <Footer/>
+        </CartContextProvider> 
+      </AuthContextProvider>
+    </BrowserRouter>
   );
 };
 

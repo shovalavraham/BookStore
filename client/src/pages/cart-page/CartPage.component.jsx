@@ -32,7 +32,7 @@ const CartPage = () => {
     ) : (
         <main className='cart-page'>
             <CartContainer/>
-            {cartContextValue.cartState.cart.books.length === 0 ? (
+            {cartContextValue.cartState.books.length === 0 ? (
                 <h1>Your cart is empty</h1>
             ) : (
                 <BuyCart/>

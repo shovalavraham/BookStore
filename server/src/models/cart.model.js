@@ -12,6 +12,13 @@ const cartSchema = new mongoose.Schema({
                 type: mongoose.SchemaTypes.ObjectId,
                 required: true,
                 ref: Book,
+            },
+            quantity: {
+                type: Number,
+                required: true,
+                trim: true,
+                min: 1,
+                max: 10,
             }
         }
     ],

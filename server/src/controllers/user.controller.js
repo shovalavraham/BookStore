@@ -31,7 +31,7 @@ export const createUser = async (req, res) => {
     }
 };
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
 
@@ -51,16 +51,13 @@ export const login = async (req, res) => {
             message: "Login successfully",
         });
     } catch (error) {
-        
-        res.status(400).send({
-            status: 400,
-            statusText: 'Bad request',
-            message: "",
-        })
+        error.status = 400;
+        error.statusText = 'Bad request';
+        next(error);
     }
 };
 
-export const logout = async (req, res) => {
+export const logout = async (req, res, next) => {
     const user = req.user;
     const token = req.token;
 
@@ -77,11 +74,9 @@ export const logout = async (req, res) => {
         });
 
     } catch (error) {
-        
-        res.status(500).send({
-            status: 500,
-            statusText: 'Internal Server Error',
-            message: '',
-        });
+        error.status = 500;
+        error.statusText = 'Internal Server Error';
+        error.message = '';
+        next(error);
     }
 };

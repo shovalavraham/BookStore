@@ -6,61 +6,9 @@ const signupActionTypes  = {
     UPDATE_REPEAT_PASSWORD: 'UPDATE_REPEAT_PASSWORD',
 };
 
-export const updateFirstname = (value, isValid, message) => {
+export const updateAction = (type, value, isValid, message) => {
     const action = {
-        type: signupActionTypes.UPDATE_FIRSTNAME,
-        payload: {
-            value: value,
-            isValid: isValid,
-            message: message,
-        },
-    };
-
-    return action;
-};
-
-export const updateLastname = (value, isValid, message) => {
-    const action = {
-        type: signupActionTypes.UPDATE_LASTNAME,
-        payload: {
-            value: value,
-            isValid: isValid,
-            message: message,
-        },
-    };
-
-    return action;
-};
-
-export const updateEmail = (value, isValid, message) => {
-    const action = {
-        type: signupActionTypes.UPDATE_EMAIL,
-        payload: {
-            value: value,
-            isValid: isValid,
-            message: message,
-        },
-    };
-
-    return action;
-};
-
-export const updatePassword = (value, isValid, message) => {
-    const action = {
-        type: signupActionTypes.UPDATE_PASSWORD,
-        payload: {
-            value: value,
-            isValid: isValid,
-            message: message,
-        },
-    };
-
-    return action;
-};
-
-export const updateRepeatPassword = (value, isValid, message) => {
-    const action = {
-        type: signupActionTypes.UPDATE_REPEAT_PASSWORD,
+        type: type,
         payload: {
             value: value,
             isValid: isValid,
