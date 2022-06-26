@@ -20,7 +20,7 @@
     justify-content: center;
     gap: 10px;
     margin: 20px 40px;
-    
+    align-items: flex-start;
 }
 
 .dashboard-book-card {

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../sidebar/Sidebar.component';
 import './header.styles.css';
+import { GiWhiteBook } from 'react-icons/gi';
+import { HiShoppingCart } from 'react-icons/hi';
 
 const Header = () => {
+    const navigate = useNavigate();
     const [className, setClassName] = useState('not-visible');
 
     const showSidebar = () => {
@@ -14,9 +17,14 @@ const Header = () => {
         setClassName('not-visible');
     };
 
+    const goHome = () => {navigate("")};
+
     return (
         <header>
-            <Link className='header-title' to="">Book Store</Link>
+            <div className='header-link' onClick={goHome}>
+                <GiWhiteBook className='book-icon'/>
+                <h1 className='header-title'>Book Store</h1>
+            </div>
 
             <button className='hamburger-btn' onClick={showSidebar}>
                 <div className='bar'></div>

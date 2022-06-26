@@ -3,6 +3,7 @@
     min-height: calc(100vh - 80px);
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 
 .books-container {
@@ -11,5 +12,6 @@
     justify-content: center;
     gap: 10px;
     margin: 20px 40px;
-    
+    padding: 20px 0;
+    align-items: flex-start;
 }

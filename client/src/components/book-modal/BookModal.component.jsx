@@ -7,8 +7,6 @@ import './book-modal.styles.css';
 import ModalLoader from "./modal-loader/ModalLoader.component";
 
 const BookModal = (props) => {
-    const [isModalLoading, setIsMoadlLoading] = useState(false);
-
     const book = props.values;
     const validities = props.validities;
     const messages = props.messages;
@@ -133,7 +131,7 @@ const BookModal = (props) => {
                 </form>
 
                 <div className="modal-btns">
-                    <button className="btn-design save-btn" onClick={handleSave}>Save</button>
+                    <button className="btn-design" onClick={handleSave}>Save</button>
                     <button className={`${props.deleteVisible} btn-design delete-btn`} onClick={props.deleteBook}>Delete</button>
                 </div>
             </div>

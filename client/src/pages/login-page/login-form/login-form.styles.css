@@ -2,7 +2,7 @@
     width: 400px;
     display: flex;
     flex-direction: column;
-    border: 2px solid rgb(75, 30, 103);
+    border: 0.5px solid #06283D;
     border-radius: 5px;
 }
 
