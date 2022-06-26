@@ -12,4 +12,6 @@ router.post('/books/new', adminAuth, bookController.createBook);
 
 router.patch('/books/:bookID', adminAuth, bookController.updateBook);
 
+router.delete('/books/:bookID', adminAuth, bookController.deleteBook);
+
 export default router;

@@ -28,3 +28,12 @@
     color: rgb(168, 1, 168);
     text-decoration: none;
 }
+
+.close-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 30px;
+    margin: 3px;
+    cursor: pointer;
+}

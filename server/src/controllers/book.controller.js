@@ -82,3 +82,24 @@ export const updateBook = async (req, res, next) => {
         next(error);
     }
 };
+
+export const deleteBook = async (req, res, next) => {
+    const bookID = req.params.bookID;
+
+    try {
+        await Book.findByIdAndDelete(bookID);
+
+        res.status(200).send({
+            status: 200,
+            statusText: 'Ok',
+            data: {},
+            message: 'Book was deleted successfully',
+        });
+
+    } catch (error) {
+        error.status = 500;
+        error.statusText = 'Internal Server Error';
+        error.message = '';
+        next(error);
+    }
+};

@@ -10,26 +10,33 @@ import PageNotFound from "./pages/page-not-found/PageNotFound.component";
 import AuthContextProvider from "./contexts/Auth.context";
 import BookPage from "./pages/book-page/BookPage.component";
 import CartContextProvider from "./contexts/Cart.context";
+import AdminLoginPage from "./pages/admin-login-page/AdminLoginPage.component";
+import AdminAuthContextProvider from "./contexts/AdminAuth.context";
+import AdminDashboardPage from "./pages/admin-dashboard-page/AdminDashboardPage.component";
 
 const App = () => {
   return ( 
     <BrowserRouter>
-      <AuthContextProvider>
-        <CartContextProvider>
-          <Header/>
+      <AdminAuthContextProvider>
+        <AuthContextProvider>
+          <CartContextProvider>
+            <Header/>
 
-          <Routes>
-            <Route path="" element={<HomePage/>}/>
-            <Route path="cart" element={<CartPage/>}/>
-            <Route path="login" element={<LoginPage/>}/>
-            <Route path="signup" element={<SignupPage/>}/>
-            <Route path="books/:id" element={<BookPage/>}/>
-            <Route path="*" element={<PageNotFound/>}/>
-          </Routes>
+            <Routes>
+              <Route path="" element={<HomePage/>}/>
+              <Route path="cart" element={<CartPage/>}/>
+              <Route path="login" element={<LoginPage/>}/>
+              <Route path="signup" element={<SignupPage/>}/>
+              <Route path="books/:id" element={<BookPage/>}/>
+              <Route path="admin" element={<AdminLoginPage/>}/>
+              <Route path="admin/dashboard" element={<AdminDashboardPage/>}/>
+              <Route path="*" element={<PageNotFound/>}/>
+            </Routes>
 
-          <Footer/>
-        </CartContextProvider> 
-      </AuthContextProvider>
+            <Footer/>
+          </CartContextProvider> 
+        </AuthContextProvider>
+      </AdminAuthContextProvider>
     </BrowserRouter>
   );
 };

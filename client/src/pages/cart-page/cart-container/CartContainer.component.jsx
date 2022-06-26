@@ -1,7 +1,9 @@
 import React from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { initCart, updateCart } from "../../../actions/cart.action.js";
+import Loader from "../../../components/shared/loader/Loader.component.jsx";
 import { AuthContext } from "../../../contexts/Auth.context.js";
 import { CartContext } from "../../../contexts/Cart.context.js";
 import environments from '../../../environments/environments.js'
@@ -11,6 +13,8 @@ import './cart-container.styles.css';
 const CartContainer = () => {
     const authContextValue = useContext(AuthContext);
     const cartContextValue = useContext(CartContext);
+
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const token = authContextValue.userToken;
@@ -30,6 +34,10 @@ const CartContainer = () => {
                 const cart = responseObj.data;
 
                 cartContextValue.dispatchCartState(initCart(cart));
+                
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
                 
             } catch (error) {
                 alert("Something went wrong!");
@@ -98,7 +106,9 @@ const CartContainer = () => {
         }
     }
 
-    return (
+    return isLoading ? (
+        <Loader/>
+    ) : (
         <div className="cart-container">
             {cartContextValue.cartState.books.map((book) => {
                 return (

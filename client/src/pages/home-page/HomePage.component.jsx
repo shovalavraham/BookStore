@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import BookCard from '../../components/book-card/BookCard.component';
 import Loader from '../../components/shared/loader/Loader.component';
 import environments from '../../environments/environments';
 import './home-page.styles.css';
 
 const HomePage = () => {
+    const navigate = useNavigate();
+
     const [isLoading, setIsLoading] = useState(true);
     const [booksState, setBooksState] = useState(null);
 
@@ -32,6 +35,12 @@ const HomePage = () => {
         getBooks();
 
     }, []);
+
+    const handleClick = (props) => {
+        const id = props.id;
+
+        navigate(`books/${id}`);
+    };
 
     return isLoading ? (
         <Loader/>

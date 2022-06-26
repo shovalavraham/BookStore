@@ -1,0 +1,87 @@
+.book-modal {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.537);
+}
+
+.modal-container {
+    width: 330px;
+    background-color: white;
+}
+
+.modal-header {
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(75, 30, 103);
+}
+
+.modal-title {
+    margin: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+}
+
+.description-container {
+    display: flex;
+    flex-direction: column;
+    margin: 8px 16px;
+}
+
+.description-label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.description-input {
+    resize: none;
+    margin-top: 4px;
+    padding: 8px 5px;
+    border: 1px solid rgb(169, 167, 167);
+    border-radius: 5px;
+}
+
+.description-input:focus {
+    outline: none;
+   border: 2px solid rgb(127, 0, 127);
+}
+
+.save-btn {
+    background-color: rgb(0, 96, 213);
+}
+
+.save-btn:hover {
+    background-color: rgb(1, 83, 184);
+}
+
+.delete-btn {
+    background-color: #b60d1e;
+}
+
+.delete-btn:hover {
+    background-color: rgb(220, 0, 0);
+}
+
+.error-message {
+    font-weight: 600;
+    font-size: 12px;
+    margin-top: 2px;
+    color: red;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.not-visible {
+    visibility: hidden;
+}

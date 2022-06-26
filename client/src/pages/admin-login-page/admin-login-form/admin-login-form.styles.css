@@ -1,0 +1,13 @@
+.admin-login-form {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid rgb(75, 30, 103);
+    border-radius: 5px;
+}
+
+.admin-login-title {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}

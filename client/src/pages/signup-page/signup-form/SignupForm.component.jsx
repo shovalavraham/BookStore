@@ -9,10 +9,12 @@ import './signup-form.styles.css';
 import isEmail from "validator/lib/isEmail";
 import isStrongPassword from "validator/lib/isStrongPassword";
 import environments from '../../../environments/environments.js'
+import { AdminAuthContext } from "../../../contexts/AdminAuth.context";
 
 const SignupForm = () => {
     const navigate = useNavigate();
     const authContextValue = useContext(AuthContext);
+    const adminAuthContextValue = useContext(AdminAuthContext);
 
     const [signupState, dispatchSignupState] = useReducer(signupReducer, SIGNUP_STATE_INIT);
 
@@ -71,6 +73,27 @@ const SignupForm = () => {
         dispatchSignupState(updateAction(signupActionTypes.UPDATE_REPEAT_PASSWORD, repeatPassword, true, ""));
     };
 
+    const adminLogout = async (token) => {
+        try {
+            const response = await fetch(`${environments.API_URL}/admins/logout`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+            
+            if(response.status !== 200) {
+                throw new Error();
+            }
+
+            localStorage.removeItem('admin-token');
+            adminAuthContextValue.setAdminToken(null);
+
+        } catch (error) {
+            alert('Something went wrong!');
+        }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -109,6 +132,11 @@ const SignupForm = () => {
                 localStorage.setItem('user-token',token);
                 authContextValue.setUserToken(token);
 
+                const adminToken = adminAuthContextValue.adminToken;
+                if(adminToken) {
+                    adminLogout(adminToken);
+                }
+
                 navigate('/');
 
             } catch (error) {
@@ -121,11 +149,11 @@ const SignupForm = () => {
         <form className='signup-form'>
             <h1 className='signup-title'>Hello new user!</h1>
 
-            <FormInput label={'First Name:'} handleInput={handleFirstnameInput} isVisible={signupState.validities.firstname} message={signupState.messages.firstname} type={'text'} id={'signupFirstnameInput'}/>
-            <FormInput label={'Last Name:'} handleInput={handleLastnameInput} isVisible={signupState.validities.lastname} message={signupState.messages.lastname} type={'text'} id={'signupLastnameInput'}/>
-            <FormInput label={'Email:'} handleInput={handleEmailInput} isVisible={signupState.validities.email} message={signupState.messages.email} type={'text'} id={'signupEmailInput'}/>
-            <FormInput label={'Password:'} handleInput={handlePasswordInput} isVisible={signupState.validities.password} message={signupState.messages.password} type={'password'} id={'signupPasswordInput'}/>
-            <FormInput label={'Repeat Password:'} handleInput={handleRepeatPasswordInput} isVisible={signupState.validities.repeatPassword} message={signupState.messages.repeatPassword} type={'password'} id={'signupRepeatPasswordInput'}/>
+            <FormInput label={'First Name:'} handleInput={handleFirstnameInput} isVisible={signupState.validities.firstname} message={signupState.messages.firstname} type={'text'} id={'signupFirstnameInput'} value=''/>
+            <FormInput label={'Last Name:'} handleInput={handleLastnameInput} isVisible={signupState.validities.lastname} message={signupState.messages.lastname} type={'text'} id={'signupLastnameInput'} value=''/>
+            <FormInput label={'Email:'} handleInput={handleEmailInput} isVisible={signupState.validities.email} message={signupState.messages.email} type={'text'} id={'signupEmailInput'} value=''/>
+            <FormInput label={'Password:'} handleInput={handlePasswordInput} isVisible={signupState.validities.password} message={signupState.messages.password} type={'password'} id={'signupPasswordInput'} value=''/>
+            <FormInput label={'Repeat Password:'} handleInput={handleRepeatPasswordInput} isVisible={signupState.validities.repeatPassword} message={signupState.messages.repeatPassword} type={'password'} id={'signupRepeatPasswordInput'} value=''/>
 
             <Link to='/login' className='form-link'>Already have an account? Login...</Link>
 

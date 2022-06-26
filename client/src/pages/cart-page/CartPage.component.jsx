@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Loader from '../../components/shared/loader/Loader.component';
 import { AuthContext } from '../../contexts/Auth.context.js';
 import BuyCart from './buy-cart/BuyCart.component';
 import CartContainer from './cart-container/CartContainer.component';
@@ -12,8 +11,6 @@ const CartPage = () => {
     const authContextValue = useContext(AuthContext);
     const cartContextValue= useContext(CartContext);
 
-    const [isLoading, setIsLoading] = useState(true);
-
     useEffect(() => {
         const token = authContextValue.userToken;
 
@@ -21,15 +18,10 @@ const CartPage = () => {
             navigate('/login');
         }
 
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
     }, []);
 
 
-    return isLoading ? (
-        <Loader/>
-    ) : (
+    return (
         <main className='cart-page'>
             <CartContainer/>
             {cartContextValue.cartState.books.length === 0 ? (

@@ -7,12 +7,14 @@ import loginActionTypes, { updateAction } from "../../../actions/login.action";
 import FormInput from "../../../components/form-input/FormInput.component";
 import loginReducer, { LOGIN_STATE_INIT } from "../../../reducers/login.reducer";
 import { AuthContext } from '../../../contexts/Auth.context';
+import { AdminAuthContext } from "../../../contexts/AdminAuth.context";
 import environments from '../../../environments/environments.js'
 import './login-form.styles.css';
 
 const LoginForm = () => {
     const navigate = useNavigate();
     const authContextValue = useContext(AuthContext);
+    const adminAuthContextValue = useContext(AdminAuthContext);
 
     const [loginState, dispatchLoginState] = useReducer(loginReducer, LOGIN_STATE_INIT);
 
@@ -36,6 +38,27 @@ const LoginForm = () => {
         }
 
         dispatchLoginState(updateAction(loginActionTypes.UPDATE_PASSWORD, password, true, ""));
+    };
+
+    const adminLogout = async (token) => {
+        try {
+            const response = await fetch(`${environments.API_URL}/admins/logout`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+            
+            if(response.status !== 200) {
+                throw new Error();
+            }
+
+            localStorage.removeItem('admin-token');
+            adminAuthContextValue.setAdminToken(null);
+
+        } catch (error) {
+            alert('Something went wrong!');
+        }
     };
 
     const handleSubmit = async (event) => {
@@ -66,6 +89,11 @@ const LoginForm = () => {
                 localStorage.setItem('user-token', token);
                 authContextValue.setUserToken(token);
 
+                const adminToken = adminAuthContextValue.adminToken;
+                if(adminToken) {
+                    adminLogout(adminToken);
+                }
+
                 navigate("/");
     
             } catch (error) {
@@ -78,8 +106,8 @@ const LoginForm = () => {
         <form className='login-form'>
             <h1 className='login-title'>Welcome back!</h1>
 
-            <FormInput label={'Email:'} handleInput={handleEmailInput} isVisible={loginState.validities.email} message={loginState.messages.email} type={'text'} id={'loginEmailInput'}/>
-            <FormInput label={'Password:'} handleInput={handlePasswordInput} isVisible={loginState.validities.password} message={loginState.messages.password} type={'password'} id={'loginPasswordInput'}/>
+            <FormInput label={'Email:'} handleInput={handleEmailInput} isVisible={loginState.validities.email} message={loginState.messages.email} type={'text'} id={'loginEmailInput'} value=''/>
+            <FormInput label={'Password:'} handleInput={handlePasswordInput} isVisible={loginState.validities.password} message={loginState.messages.password} type={'password'} id={'loginPasswordInput'} value=''/>
 
             <Link to='/signup' className='form-link'>Don't have an account? Signup...</Link>
 
