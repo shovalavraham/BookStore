@@ -27,10 +27,12 @@
 
 .cart-book-title {
     font-size: 18px;
+    font-weight: 600;
 }
 
 .cart-book-author {
     font-size: 14px;
+    font-weight: 500;
 }
 
 .price-remove {
@@ -41,14 +43,6 @@
 }
 
 .cart-book-price {
-    font-weight: 800;
+    font-weight: 600;
     font-size: 20PX;
-}
-
-.remove-btn {
-    background-color: #b60d1e;
-}
-
-.remove-btn:hover {
-    background-color: rgb(220, 0, 0);
 }

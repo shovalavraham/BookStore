@@ -125,7 +125,7 @@ const CartContainer = () => {
                         <div className="price-remove">
                             <div className="cart-book-price">{`${book.bookID.price}$`}</div>
                             <QuantityBtn value={book.quantity} bookID={book.bookID._id} updateQuantity={updateQuantity} price={book.bookID.price}/>
-                            <button className="btn-design remove-btn" bookid={book.bookID._id} bookprice={book.bookID.price} onClick={handleRemove}>Remove</button>
+                            <button className="btn-design red-btn" bookid={book.bookID._id} bookprice={book.bookID.price} onClick={handleRemove}>Remove</button>
                         </div>
                     </div>
                 );

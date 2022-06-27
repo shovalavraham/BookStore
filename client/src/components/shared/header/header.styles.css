@@ -4,7 +4,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color:#06283D;
+    background-color:#22c165;
     color: black;
 }
 
@@ -16,15 +16,15 @@ header {
 
 .book-icon {
     margin-left: 8px;
-    font-size: 40px;
-    color: #DFF6FF;
+    font-size: 46px;
+    color: white;
 }
 
 .header-title {
     margin-left: 8px;
-    font-size: 26px;
-    font-weight: 700;
-    color: #DFF6FF;
+    font-size: 32px;
+    font-weight: 300;
+    color: white;
     text-decoration: none;
 }
 
@@ -39,6 +39,6 @@ header {
 .bar {
     width: 30px;
     height: 3px;
-    background-color: #DFF6FF;
+    background-color: white;
     margin: 6px 2px;
 }

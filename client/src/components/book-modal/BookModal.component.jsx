@@ -131,8 +131,8 @@ const BookModal = (props) => {
                 </form>
 
                 <div className="modal-btns">
-                    <button className="btn-design" onClick={handleSave}>Save</button>
-                    <button className={`${props.deleteVisible} btn-design delete-btn`} onClick={props.deleteBook}>Delete</button>
+                    <button className="btn-design blue-btn" onClick={handleSave}>Save</button>
+                    <button className={`${props.deleteVisible} btn-design red-btn`} onClick={props.deleteBook}>Delete</button>
                 </div>
             </div>
             

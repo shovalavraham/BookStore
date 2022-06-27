@@ -38,7 +38,7 @@ const BuyCart = () => {
 
     return (
         <div className="buy-cart-container">
-            <button className="btn-design checkout" onClick={handleCheckout}>Checkout</button>
+            <button className="btn-design checkout blue-btn" onClick={handleCheckout}>Checkout</button>
             <div className="total-price">{`${cartContextValue.cartState.price}$`}</div>
         </div>
     );

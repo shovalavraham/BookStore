@@ -10,7 +10,7 @@
     padding: 12px;
     border: none;
     border-radius: 8px;
-    background-color: #1363DF;
+    background-color: #22c165;
     color: white;
     font-size: 16px;
     font-weight: 500;
@@ -18,7 +18,7 @@
 }
 
 .btn-design:hover {
-    background-color: #0f56c1;
+    background-color: #21aa5a;
 }
 
 .form-link {
@@ -36,4 +36,20 @@
     font-size: 30px;
     margin: 3px;
     cursor: pointer;
+}
+
+.blue-btn {
+    background-color: #1363DF;
+}
+
+.blue-btn:hover {
+    background-color: #1055be;
+}
+
+.red-btn {
+    background-color: rgb(222, 0, 0);
+}
+
+.red-btn:hover {
+    background-color: rgb(200, 0, 0);
 }

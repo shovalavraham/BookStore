@@ -8,6 +8,7 @@ import bookReducer, { BOOK_STATE_INIT } from "../../reducers/book.reducer";
 import { loadBook, resetBook } from "../../actions/book.action";
 import BookModal from "../../components/book-modal/BookModal.component";
 import { AdminAuthContext } from '../../contexts/AdminAuth.context';
+import { BsGraphUp } from 'react-icons/bs';
 
 const AdminDashboardPage = () => {
     const navigate = useNavigate();
@@ -19,39 +20,41 @@ const AdminDashboardPage = () => {
     const [editState, setEditState] = useState(false);
     const [createBookState, setCreateBookState] = useState(false);
     const [isModalLoading, setIsMoadlLoading] = useState(false);
+    const [originalBookState, setOriginalBookState] = useState(null);
 
     useEffect(() => {
         if(!localStorage.getItem('admin-token')) {
             navigate("*");
         }
 
+        const getBooks = async () => {
+            try {
+                const response = await fetch(`${environments.API_URL}/books`);
+    
+                if(!response.status) {
+                    throw new Error();
+                }
+    
+                const responseObj = await response.json();
+                setBooksState(responseObj.data);
+    
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
+    
+            } catch (error) {
+                alert("Something went wrong!");
+            }
+        };
+
         getBooks();
 
     }, []);
 
-    const getBooks = async () => {
-        try {
-            const response = await fetch(`${environments.API_URL}/books`);
-
-            if(!response.status) {
-                throw new Error();
-            }
-
-            const responseObj = await response.json();
-            setBooksState(responseObj.data);
-
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 2000);
-
-        } catch (error) {
-            alert("Something went wrong!");
-        }
-    };
-
     const handleBookClick = (e, book) => {
-        setEditState(true);
         dispatchBookState(loadBook(book));
+        setOriginalBookState(book);
+        setEditState(true);
     };
 
     const handleCreateBookClick = () => {
@@ -59,15 +62,20 @@ const AdminDashboardPage = () => {
     }
 
     const handleClose = () => {
+        dispatchBookState(resetBook());
         setEditState(false);
         setCreateBookState(false);
-        dispatchBookState(resetBook());
     };
 
     const updateBook = async () => {
         const token = adminAuthContextValue.adminToken;
         const data = bookState.values;
         const validities = bookState.validities;
+        
+        if(JSON.stringify(originalBookState) === JSON.stringify(data)) {
+            handleClose();
+            return;
+        }
         
         if(validities.title &&
             validities.author &&
@@ -90,8 +98,13 @@ const AdminDashboardPage = () => {
                 if(response.status !== 202) {
                     throw new Error();
                 }
-    
-                getBooks();
+                
+                const updatedBooks = booksState.map(book => {
+                    if(book._id === data._id)
+                        return data;
+                    return book;
+                });
+                setBooksState(updatedBooks);
 
                 setTimeout(() => {
                     setIsMoadlLoading(false);
@@ -131,7 +144,8 @@ const AdminDashboardPage = () => {
                     throw new Error();
                 }
                 
-                getBooks();
+                const responseObj = await response.json();
+                setBooksState(booksState => [...booksState, responseObj.data]);
 
                 setTimeout(() => {
                     setIsMoadlLoading(false);
@@ -164,7 +178,7 @@ const AdminDashboardPage = () => {
                 throw new Error();
             }
             
-            getBooks();
+            setBooksState(booksState.filter(book => (book._id !== bookID)));
 
             setTimeout(() => {
                 setIsMoadlLoading(false);
@@ -181,9 +195,14 @@ const AdminDashboardPage = () => {
         <Loader/>
     ) : (
         <main className='admin-dashboard-page'>
-            <h1 className="dashboard-title">Admin Dashboard</h1>
+            <div className="dashboard-header">
+                <div className="dashboard-title-icon">
+                    <BsGraphUp className="dashboard-icon"/>
+                    <h1 className="dashboard-title">Admin Dashboard</h1>
+                </div>
 
-            <button className="btn-design create-book-btn" onClick={handleCreateBookClick}>Create New Book</button>
+                <button className="btn-design create-book-btn" onClick={handleCreateBookClick}>Create New Book</button>
+            </div>
 
             <div className='dashboard-books-container'>
                 {booksState.map((book) => {

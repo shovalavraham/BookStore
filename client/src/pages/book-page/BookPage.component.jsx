@@ -7,7 +7,7 @@ import { CartContext } from '../../contexts/Cart.context';
 import './book-page.styles.css';
 import { useContext } from "react";
 import environments from '../../environments/environments.js'
-import { addBook, initCart } from "../../actions/cart.action";
+import { initCart } from "../../actions/cart.action";
 
 const BookPage = () => {
     const navigate = useNavigate();
@@ -157,7 +157,7 @@ const BookPage = () => {
             <div className="book-container">
                 <img src={bookState.bookCover} alt='book cover' width="300" height="500"/>
                 <div className="details">
-                    <h1>{bookState.title}</h1>
+                    <h1 className="book-title">{bookState.title}</h1>
 
                     <div className="author-pages">
                         <h2 className="book-author">{bookState.author}</h2>

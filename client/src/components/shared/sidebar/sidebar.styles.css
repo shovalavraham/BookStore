@@ -14,7 +14,7 @@
     right: 0;
     height: 100%;
     width: 300px;
-    background-color:#06283D;
+    background-color:#22c165;
 }
 
 .sidebar-links {
@@ -25,7 +25,7 @@
 }
 
 .sidebar-link {
-    color: #DFF6FF;
+    color: white;
     text-decoration: none;
     margin: 16px 0;
 }
@@ -41,7 +41,7 @@
 .logout-btn {
     background: none;
     border: none;
-    color: #DFF6FF;
+    color: white;
     font-size: 16px;
     cursor: pointer;
     margin: 16px 0;
