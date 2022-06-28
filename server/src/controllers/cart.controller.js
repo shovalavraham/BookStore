@@ -1,5 +1,4 @@
 import Cart from "../models/cart.model.js";
-import Book from "../models/book.model.js";
 
 export const getCart = async (req, res, next) => {
     const userID = req.user._id;
@@ -55,11 +54,12 @@ export const updateCart = async (req, res, next) => {
 
 export const addBookToCart = async (req, res, next) => {
     const bookID = req.body.bookID;
+    const quantity = req.body.quantity;
     const user = req.user;
     
     try {
         const cart = await Cart.findOne({ownerID: user._id});
-        cart.books.push({bookID: bookID, quantity: 1});
+        cart.books.push({bookID: bookID, quantity: quantity});
 
         await cart.populate('books.bookID');
 

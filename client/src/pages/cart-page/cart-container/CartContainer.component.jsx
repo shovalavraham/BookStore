@@ -1,13 +1,12 @@
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { initCart, updateCart } from "../../../actions/cart.action.js";
 import Loader from "../../../components/shared/loader/Loader.component.jsx";
 import { AuthContext } from "../../../contexts/Auth.context.js";
 import { CartContext } from "../../../contexts/Cart.context.js";
 import environments from '../../../environments/environments.js'
-import QuantityBtn from "../quantity-btn/QuantityBtn.component.jsx";
+import QuantityBtn from "../../../components/quantity-btn/QuantityBtn.component";
+import BookDetails from "./book-details/BookDetails.component.jsx";
 import './cart-container.styles.css';
 
 const CartContainer = () => {
@@ -52,6 +51,7 @@ const CartContainer = () => {
         const eventAttributes = event.target.attributes;
         const bookID = eventAttributes.getNamedItem('bookid').value;
         const bookPrice = eventAttributes.getNamedItem('bookprice').value;
+        const bookQuantity = eventAttributes.getNamedItem('quantity').value;
         const token = authContextValue.userToken;
 
         try {
@@ -74,7 +74,7 @@ const CartContainer = () => {
            const cart = responseObj.data;
 
            const price = cartContextValue.cartState.price;
-           cartContextValue.dispatchCartState(updateCart(cart, price, bookPrice));
+           cartContextValue.dispatchCartState(updateCart(cart, price, bookPrice, bookQuantity));
 
         } catch (error) {
             alert("Something went wrong!");
@@ -113,19 +113,12 @@ const CartContainer = () => {
             {cartContextValue.cartState.books.map((book) => {
                 return (
                     <div className="cart-book-container" key={book.bookID._id}>
-                        <div className="books-details">
-                            <img src={book.bookID.bookCover} alt="book cover" width="90" height="120"/>
-
-                            <div className="title-author">
-                                <h2 className="cart-book-title">{book.bookID.title}</h2>
-                                <h3 className="cart-book-author">{book.bookID.author}</h3>
-                            </div>
-                        </div>
+                        <BookDetails id={book.bookID._id} title={book.bookID.title} author={book.bookID.author} bookCover={book.bookID.bookCover}/>
 
                         <div className="price-remove">
                             <div className="cart-book-price">{`${book.bookID.price}$`}</div>
-                            <QuantityBtn value={book.quantity} bookID={book.bookID._id} updateQuantity={updateQuantity} price={book.bookID.price}/>
-                            <button className="btn-design red-btn" bookid={book.bookID._id} bookprice={book.bookID.price} onClick={handleRemove}>Remove</button>
+                            <QuantityBtn value={book.quantity} bookID={book.bookID._id} updateQuantity={updateQuantity}/>
+                            <button className="btn-design red-btn" bookid={book.bookID._id} bookprice={book.bookID.price} quantity={book.quantity} onClick={handleRemove}>Remove</button>
                         </div>
                     </div>
                 );

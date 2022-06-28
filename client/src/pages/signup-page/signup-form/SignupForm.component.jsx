@@ -10,6 +10,7 @@ import isEmail from "validator/lib/isEmail";
 import isStrongPassword from "validator/lib/isStrongPassword";
 import environments from '../../../environments/environments.js'
 import { AdminAuthContext } from "../../../contexts/AdminAuth.context";
+import { signup } from "../../../services/user.service";
 
 const SignupForm = () => {
     const navigate = useNavigate();
@@ -114,20 +115,8 @@ const SignupForm = () => {
             }
 
             try {
-                const response = await fetch(`${environments.API_URL}/users/signup`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data),
-                });
-                
-                if(response.status !== 201) {
-                    throw new Error();
-                }
-
-                const responseObj = await response.json();
-                const token = responseObj.data.token;
+                const response = await signup(data);
+                const {token} = response.data;
 
                 localStorage.setItem('user-token',token);
                 authContextValue.setUserToken(token);

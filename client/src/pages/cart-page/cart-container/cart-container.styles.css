@@ -16,25 +16,6 @@
     background-color: white;
 }
 
-.books-details {
-    display: flex;
-}
-
-.title-author {
-    margin-left: 16px;
-    margin-right: 8px;
-}
-
-.cart-book-title {
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.cart-book-author {
-    font-size: 14px;
-    font-weight: 500;
-}
-
 .price-remove {
     display: flex;
     flex-wrap: wrap;
@@ -44,5 +25,6 @@
 
 .cart-book-price {
     font-weight: 600;
-    font-size: 20PX;
+    font-size: 20px;
+    margin-right: 12px;
 }

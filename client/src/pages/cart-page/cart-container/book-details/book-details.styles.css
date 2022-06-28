@@ -1,0 +1,22 @@
+.books-details {
+    display: flex;
+    cursor: pointer;
+    background-color: white;
+    border: none;
+}
+
+.title-author {
+    margin-left: 16px;
+    margin-right: 8px;
+    text-align: left;
+}
+
+.cart-book-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.cart-book-author {
+    font-size: 14px;
+    font-weight: 500;
+}

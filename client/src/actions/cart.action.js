@@ -16,13 +16,14 @@ export const initCart = (cart) => {
     return action;
 };
 
-export const updateCart = (cart, price, bookPrice) => {
+export const updateCart = (cart, price, bookPrice , bookQuantity) => {
     const action = {
         type: cartActionTypes.UPDATE_CART,
         payload: {
             cart: cart,
             price: price,
             bookPrice: bookPrice,
+            bookQuantity: bookQuantity,
         }
     };
 
@@ -40,12 +41,13 @@ export const checkoutCart = (cart) => {
     return action;
 };
 
-export const updatePrice = (cart, bookPrice, sign) => {
+export const updatePrice = (cart, bookID, quantity, sign) => {
     const action = {
         type: cartActionTypes.UPDATE_PRICE,
         payload: {
             cart: cart,
-            bookPrice: bookPrice,
+            bookID: bookID,
+            quantity: quantity,
             sign: sign,
         }
     };

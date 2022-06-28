@@ -5,12 +5,16 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+:root {
+    --bg-primary: #22c165;
+}
+
 .btn-design {
     margin: 12px;
     padding: 12px;
     border: none;
     border-radius: 8px;
-    background-color: #22c165;
+    background-color: var(--bg-primary);
     color: white;
     font-size: 16px;
     font-weight: 500;

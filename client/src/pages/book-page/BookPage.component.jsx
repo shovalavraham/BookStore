@@ -8,6 +8,7 @@ import './book-page.styles.css';
 import { useContext } from "react";
 import environments from '../../environments/environments.js'
 import { initCart } from "../../actions/cart.action";
+import QuantityBtn from "../../components/quantity-btn/QuantityBtn.component";
 
 const BookPage = () => {
     const navigate = useNavigate();
@@ -16,6 +17,7 @@ const BookPage = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [bookState, setBookState] = useState(null);
+    const [quantityState, setQuantityState] = useState(1);
 
     const {id} = useParams();
 
@@ -112,18 +114,21 @@ const BookPage = () => {
             return;
         }
 
+        let updatedQuantity = quantityState;
+
         const cart = cartContextValue.cartState;
         const book = cart.books.find(book => book.bookID._id === id);
-       
-        if(book) {
-            const quantity = book.quantity + 1;
 
-            if(quantity > 10) {
+        if(book) {
+            updatedQuantity += book.quantity;
+
+            if(updatedQuantity > 10) {
                 alert(`You can't have more then 10 copies!`);
                 return;
             }
-            updateQuantity(token, book.bookID._id, quantity);
-            alert('Another copy was added');
+
+            updateQuantity(token, book.bookID._id, updatedQuantity);
+            alert('Book was added successfully!');
             return;
         }
         
@@ -136,6 +141,7 @@ const BookPage = () => {
                 },
                 body: JSON.stringify({
                     'bookID': id,
+                    'quantity': updatedQuantity,
                 }),
             });
 
@@ -165,7 +171,11 @@ const BookPage = () => {
                     </div>
 
                     <div className="cart-price">
-                        <button className="btn-design add-to-cart-btn" onClick={handleAddToCart}>Add to cart</button>
+                        <div className="add-to-cart-container">
+                            <QuantityBtn value={1} bookid={id} page={'book'} setQuantityState={setQuantityState}/>
+                            <button className="btn-design add-to-cart-btn" onClick={handleAddToCart}>Add to cart</button>
+                        </div>
+        
                         <div  className="book-price">{`${bookState.price}$`}</div>
                     </div>
 
