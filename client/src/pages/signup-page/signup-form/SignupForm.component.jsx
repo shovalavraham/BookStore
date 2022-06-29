@@ -11,6 +11,7 @@ import isStrongPassword from "validator/lib/isStrongPassword";
 import environments from '../../../environments/environments.js'
 import { AdminAuthContext } from "../../../contexts/AdminAuth.context";
 import { signup } from "../../../services/user.service";
+import { adminLogout } from "../../../services/admin.service";
 
 const SignupForm = () => {
     const navigate = useNavigate();
@@ -74,18 +75,9 @@ const SignupForm = () => {
         dispatchSignupState(updateAction(signupActionTypes.UPDATE_REPEAT_PASSWORD, repeatPassword, true, ""));
     };
 
-    const adminLogout = async (token) => {
+    const handleAdminLogout = async (token) => {
         try {
-            const response = await fetch(`${environments.API_URL}/admins/logout`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-            
-            if(response.status !== 200) {
-                throw new Error();
-            }
+            adminLogout(token);
 
             localStorage.removeItem('admin-token');
             adminAuthContextValue.setAdminToken(null);
@@ -123,7 +115,7 @@ const SignupForm = () => {
 
                 const adminToken = adminAuthContextValue.adminToken;
                 if(adminToken) {
-                    adminLogout(adminToken);
+                    handleAdminLogout(adminToken);
                 }
 
                 navigate('/');

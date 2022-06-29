@@ -9,6 +9,8 @@ import environments from '../../environments/environments.js'
 import { initCartAction } from "../../actions/cart.action";
 import QuantityBtn from "../../components/quantity-btn/QuantityBtn.component";
 import { LOADER_TIMEOUT } from '../../constants/constants.js';
+import { getBookByID } from "../../services/book.service";
+import { addBookToCart, getCart, updateQuantity } from "../../services/cart.service";
 
 const BookPage = () => {
     const navigate = useNavigate();
@@ -25,15 +27,9 @@ const BookPage = () => {
 
         const getBook = async () => {
             try {
-                const response = await fetch(`${environments.API_URL}/books/${id}`);
-    
-                if(!response.status) {
-                    throw new Error();
-                }
-    
-                const responseObj = await response.json();
-                const book = responseObj.data;
-
+                const response = await getBookByID(id);
+                const book = response.data;
+                
                 if(!book) {
                     throw new Error();
                 }
@@ -41,7 +37,7 @@ const BookPage = () => {
                 setBookState(book);
     
             } catch (error) {
-                navigate('*');
+                navigate('/*');
             }
         };
 
@@ -55,19 +51,10 @@ const BookPage = () => {
     useEffect(() => {
         const token = authContextValue.userToken;
 
-        const getCart = async () => {
+        const geUsertCart = async () => {
             try {
-                const response = await fetch(`${environments.API_URL}/cart`, {
-                    headers : {
-                        'Authorization': `Bearer ${token}`, 
-                    },
-                });
-
-                if(!response.status) {
-                    throw new Error();
-                }
-                const responseObj = await response.json();
-                const cart = responseObj.data;
+                const response = await getCart(token);
+                const cart = response.data;
 
                 cartContextValue.dispatchCartState(initCartAction(cart));
                 
@@ -77,29 +64,15 @@ const BookPage = () => {
         };
 
         if(token) {
-            getCart();
+            geUsertCart();
         }
 
     }, [cartContextValue.cartState]);
 
-    const updateQuantity = async (token, bookID, quantity) => {
+    const handleUpdateQuantity = async (token, bookID, quantity) => {
 
         try {
-            const response = await fetch(`${environments.API_URL}/cart/update-quantity`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    bookID: bookID,
-                    quantity: quantity,
-                }),
-            });
-
-            if(response.status !== 202) {
-                throw new Error();
-            }
+            await updateQuantity(token, bookID, quantity);
 
         } catch (error) {
             alert("Something went wrong!");
@@ -127,27 +100,13 @@ const BookPage = () => {
                 return;
             }
 
-            updateQuantity(token, book.bookID._id, updatedQuantity);
+            handleUpdateQuantity(token, book.bookID._id, updatedQuantity);
             alert('Book was added successfully!');
             return;
         }
         
         try {
-            const response = await fetch(`${environments.API_URL}/cart/add-to-cart`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    'bookID': id,
-                    'quantity': updatedQuantity,
-                }),
-            });
-
-            if(!response.status) {
-                throw new Error();
-            }
+            await addBookToCart(token, id, updatedQuantity);
 
             alert('Book was added successfully!');
 

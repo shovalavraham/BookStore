@@ -11,6 +11,7 @@ import { AdminAuthContext } from '../../contexts/AdminAuth.context';
 import { BsGraphUp } from 'react-icons/bs';
 import { FaPlus } from 'react-icons/fa';
 import { LOADER_TIMEOUT } from '../../constants/constants.js';
+import { createBook, deleteBook, getAllBooks, updateBook } from "../../services/book.service";
 
 const AdminDashboardPage = () => {
     const navigate = useNavigate();
@@ -31,14 +32,8 @@ const AdminDashboardPage = () => {
 
         const getBooks = async () => {
             try {
-                const response = await fetch(`${environments.API_URL}/books`);
-    
-                if(!response.status) {
-                    throw new Error();
-                }
-    
-                const responseObj = await response.json();
-                setBooksState(responseObj.data);
+                const response = await getAllBooks();
+                setBooksState(response.data);
     
                 setTimeout(() => {
                     setIsLoading(false);
@@ -69,7 +64,7 @@ const AdminDashboardPage = () => {
         setCreateBookState(false);
     };
 
-    const updateBook = async () => {
+    const handleUpdateBook = async () => {
         const token = adminAuthContextValue.adminToken;
         const data = bookState.values;
         const validities = bookState.validities;
@@ -88,18 +83,7 @@ const AdminDashboardPage = () => {
             setIsMoadlLoading(true);
 
             try {
-                const response = await fetch(`${environments.API_URL}/books/${data._id}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(data),
-                });
-    
-                if(response.status !== 202) {
-                    throw new Error();
-                }
+                await updateBook(token, data);
                 
                 const updatedBooks = booksState.map(book => {
                     if(book._id === data._id)
@@ -119,7 +103,7 @@ const AdminDashboardPage = () => {
         }
     };
 
-    const createBook = async () => {
+    const handleCreateBook = async () => {
         const token = adminAuthContextValue.adminToken;
         const data = bookState.values;
         const validities = bookState.validities;
@@ -133,21 +117,8 @@ const AdminDashboardPage = () => {
             setIsMoadlLoading(true);
 
             try {
-                const response = await fetch(`${environments.API_URL}/books/new`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(data),
-                });
-
-                if(response.status !== 201) {
-                    throw new Error();
-                }
-                
-                const responseObj = await response.json();
-                setBooksState(booksState => [...booksState, responseObj.data]);
+                const response = await createBook(token, data);
+                setBooksState(booksState => [...booksState, response.data]);
 
                 setTimeout(() => {
                     setIsMoadlLoading(false);
@@ -162,23 +133,14 @@ const AdminDashboardPage = () => {
         
     };
 
-    const deleteBook = async () => {
+    const handleDeleteBook = async () => {
         setIsMoadlLoading(true);
 
         const token = adminAuthContextValue.adminToken;
         const bookID = bookState.values._id;
 
         try {
-            const response = await fetch(`${environments.API_URL}/books/${bookID}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-            
-            if(!response.status) {
-                throw new Error();
-            }
+            await deleteBook(token, bookID);
             
             setBooksState(booksState.filter(book => (book._id !== bookID)));
 
@@ -232,11 +194,11 @@ const AdminDashboardPage = () => {
             </div>
 
             {editState &&
-                <BookModal {...bookState} dispatchBookState={dispatchBookState} handleClose={handleClose} updateBook={updateBook} deleteBook={deleteBook} header="Edit Book" isModalLoading={isModalLoading} deleteVisible={'visible'}/>
+                <BookModal {...bookState} dispatchBookState={dispatchBookState} handleClose={handleClose} updateBook={handleUpdateBook} deleteBook={handleDeleteBook} header="Edit Book" isModalLoading={isModalLoading} deleteVisible={'visible'}/>
             }
 
             {createBookState &&
-                <BookModal {...bookState} dispatchBookState={dispatchBookState} handleClose={handleClose} createBook={createBook} header="Create New Book" isModalLoading={isModalLoading} deleteVisible={'not-visible'}/>
+                <BookModal {...bookState} dispatchBookState={dispatchBookState} handleClose={handleClose} createBook={handleCreateBook} header="Create New Book" isModalLoading={isModalLoading} deleteVisible={'not-visible'}/>
             }
         </main>
     );

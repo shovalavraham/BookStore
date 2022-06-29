@@ -10,6 +10,7 @@ import BookDetails from "./book-details/BookDetails.component.jsx";
 import './cart-container.styles.css';
 import { useNavigate } from "react-router-dom";
 import { LOADER_TIMEOUT } from '../../../constants/constants.js';
+import { getCart, updateCart, updateQuantity } from "../../../services/cart.service.js";
 
 const CartContainer = () => {
     const navigate = useNavigate();
@@ -26,19 +27,10 @@ const CartContainer = () => {
             return;
         }
 
-        const getCart = async () => {
+        const getUserCart = async () => {
             try {
-                const response = await fetch(`${environments.API_URL}/cart`, {
-                    headers : {
-                        'Authorization': `Bearer ${token}`, 
-                    },
-                });
-
-                if(!response.status) {
-                    throw new Error();
-                }
-                const responseObj = await response.json();
-                const cart = responseObj.data;
+                const response = await getCart(token);
+                const cart = response.data;
 
                 cartContextValue.dispatchCartState(initCartAction(cart));
                 
@@ -51,7 +43,7 @@ const CartContainer = () => {
             }
         };
 
-        getCart();
+        getUserCart();
         
     }, []);
 
@@ -63,23 +55,8 @@ const CartContainer = () => {
         const token = authContextValue.userToken;
 
         try {
-           const response = await fetch(`${environments.API_URL}/cart`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    'bookID': bookID
-                }),
-           });
-            
-           if(response.status !== 202) {
-                throw new Error();
-           }
-
-           const responseObj = await response.json();
-           const cart = responseObj.data;
+           const response = await updateCart(token, bookID);
+           const cart = response.data;
 
            const price = cartContextValue.cartState.price;
            cartContextValue.dispatchCartState(updateCartAction(cart, price, bookPrice, bookQuantity));
@@ -89,25 +66,11 @@ const CartContainer = () => {
         }
     };
 
-    const updateQuantity = async (bookID, quantity) => {
+    const handleUpdateQuantity = async (bookID, quantity) => {
         const token = authContextValue.userToken;
 
         try {
-            const response = await fetch(`${environments.API_URL}/cart/update-quantity`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    bookID: bookID,
-                    quantity: quantity,
-                }),
-            });
-
-            if(response.status !== 202) {
-                throw new Error();
-            }
+            await updateQuantity(token, bookID, quantity);
 
         } catch (error) {
             alert("Something went wrong!");
@@ -125,7 +88,7 @@ const CartContainer = () => {
 
                         <div className="price-remove">
                             <div className="cart-book-price">{`${book.bookID.price}$`}</div>
-                            <QuantityBtn value={book.quantity} bookID={book.bookID._id} updateQuantity={updateQuantity}/>
+                            <QuantityBtn value={book.quantity} bookID={book.bookID._id} updateQuantity={handleUpdateQuantity}/>
                             <button className="btn-design red-btn" bookid={book.bookID._id} bookprice={book.bookID.price} quantity={book.quantity} onClick={handleRemove}>Remove</button>
                         </div>
                     </div>

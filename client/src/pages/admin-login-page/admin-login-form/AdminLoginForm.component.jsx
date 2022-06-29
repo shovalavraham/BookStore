@@ -5,6 +5,8 @@ import FormInput from "../../../components/form-input/FormInput.component";
 import { AdminAuthContext } from '../../../contexts/AdminAuth.context.js';
 import { AuthContext } from '../../../contexts/Auth.context.js';
 import environments from '../../../environments/environments.js';
+import { adminLogin } from "../../../services/admin.service";
+import { logout } from "../../../services/user.service";
 import './admin-login-form.styles.css';
 
 const AdminLoginForm = () => {
@@ -27,16 +29,7 @@ const AdminLoginForm = () => {
 
     const userLogout = async (token) => {
         try {
-            const response = await fetch(`${environments.API_URL}/users/logout`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-            
-            if(response.status !== 200) {
-                throw new Error();
-            }
+            logout(token);
 
             localStorage.removeItem('user-token');
             authContextValue.setUserToken(null);
@@ -55,20 +48,8 @@ const AdminLoginForm = () => {
         };
 
         try {
-            const response = await fetch(`${environments.API_URL}/admins/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data),
-            });
-
-            if(!response.status) {
-                throw new Error();
-            }
-
-            const responseObj = await response.json();
-            const token = responseObj.data.token;
+            const response = await adminLogin(data);
+            const {token} = response.data;
 
             localStorage.setItem('admin-token', token);
             adminAuthContextValue.setAdminToken(token);

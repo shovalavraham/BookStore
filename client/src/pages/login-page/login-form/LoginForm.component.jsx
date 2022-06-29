@@ -10,6 +10,8 @@ import { AuthContext } from '../../../contexts/Auth.context';
 import { AdminAuthContext } from "../../../contexts/AdminAuth.context";
 import environments from '../../../environments/environments.js'
 import './login-form.styles.css';
+import { login } from "../../../services/user.service";
+import { adminLogout } from "../../../services/admin.service";
 
 const LoginForm = () => {
     const navigate = useNavigate();
@@ -40,18 +42,9 @@ const LoginForm = () => {
         dispatchLoginState(updateAction(loginActionTypes.UPDATE_PASSWORD, password, true, ""));
     };
 
-    const adminLogout = async (token) => {
+    const handleAdminLogout = async (token) => {
         try {
-            const response = await fetch(`${environments.API_URL}/admins/logout`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-            
-            if(response.status !== 200) {
-                throw new Error();
-            }
+            await adminLogout(token);
 
             localStorage.removeItem('admin-token');
             adminAuthContextValue.setAdminToken(null);
@@ -71,27 +64,15 @@ const LoginForm = () => {
             };
     
             try {
-                const response = await fetch(`${environments.API_URL}/users/login`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data),
-                });
-
-                if(!response.status) {
-                    throw new Error();
-                }
-
-                const responseObj = await response.json();
-                const token = responseObj.data.token;
+                const response = await login(data);
+                const {token} = response.data;
 
                 localStorage.setItem('user-token', token);
                 authContextValue.setUserToken(token);
 
                 const adminToken = adminAuthContextValue.adminToken;
                 if(adminToken) {
-                    adminLogout(adminToken);
+                    handleAdminLogout(adminToken);
                 }
 
                 navigate("/");

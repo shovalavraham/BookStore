@@ -5,6 +5,8 @@ import { AuthContext } from '../../../contexts/Auth.context';
 import { AdminAuthContext } from "../../../contexts/AdminAuth.context";
 import environments from '../../../environments/environments.js'
 import './sidebar.styles.css';
+import { logout } from "../../../services/user.service";
+import { adminLogin } from "../../../services/admin.service";
 
 const Sidebar = ({className, hideSidebar}) => {
     const navigate = useNavigate();
@@ -14,18 +16,9 @@ const Sidebar = ({className, hideSidebar}) => {
     const userToken = authContextValue.userToken;
     const adminToken = adminAuthContextValue.adminToken;
 
-    const adminLogout = async (token) => {
+    const handleAdminLogout = async (token) => {
         try {
-            const response = await fetch(`${environments.API_URL}/admins/logout`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-            
-            if(response.status !== 200) {
-                throw new Error();
-            }
+            await adminLogin(token);
 
             localStorage.removeItem('admin-token');
             adminAuthContextValue.setAdminToken(null);
@@ -35,18 +28,9 @@ const Sidebar = ({className, hideSidebar}) => {
         }
     };
 
-    const userLogout = async (token) => {
+    const handleUserLogout = async (token) => {
         try {
-            const response = await fetch(`${environments.API_URL}/users/logout`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-            
-            if(response.status !== 200) {
-                throw new Error();
-            }
+            logout(token);
 
             localStorage.removeItem('user-token');
             authContextValue.setUserToken(null);
@@ -58,11 +42,11 @@ const Sidebar = ({className, hideSidebar}) => {
 
     const handleLogout = async () => {
         if(userToken) {
-            userLogout(userToken);
+            handleUserLogout(userToken);
         }
 
         if(adminToken) {
-            adminLogout(adminToken);
+            handleAdminLogout(adminToken);
         }
         
         hideSidebar();

@@ -4,6 +4,7 @@ import { checkoutCartAction } from "../../../actions/cart.action";
 import { AuthContext } from "../../../contexts/Auth.context";
 import { CartContext } from "../../../contexts/Cart.context";
 import environments from "../../../environments/environments";
+import { checkout } from "../../../services/cart.service";
 import './buy-cart.styles.css';
 
 const BuyCart = () => {
@@ -14,19 +15,8 @@ const BuyCart = () => {
         const token = authContextValue.userToken;
 
         try {
-            const response = await fetch(`${environments.API_URL}/cart/checkout`, {
-                method: 'PATCH',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                }
-            });
-
-            if(response.status !== 202) {
-                throw new Error();
-            }
-
-            const responseObj = await response.json();
-            const cart = responseObj.data;
+            const response = await checkout(token);
+            const cart = response.data;
 
             cartContextValue.dispatchCartState(checkoutCartAction(cart));
             alert('Checkout was done successfully!');

@@ -1,14 +1,15 @@
 import environments from "../environments/environments";
 
-export const signup = async (data) => {
-    const response = await fetch(`${environments.API_URL}/users/signup`, {
+export const adminSignup = async (token, data) => {
+    const response = await fetch(`${environments.API_URL}/admins/new`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(data),
     });
-    
+
     if(response.status !== 201) {
         throw new Error();
     }
@@ -16,10 +17,10 @@ export const signup = async (data) => {
     const responseObj = await response.json();
 
     return responseObj;
-}
+};
 
-export const login = async (data) => {
-    const response = await fetch(`${environments.API_URL}/users/login`, {
+export const adminLogin = async (data) => {
+    const response = await fetch(`${environments.API_URL}/admins/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -36,8 +37,8 @@ export const login = async (data) => {
     return responseObj;
 };
 
-export const logout = async (token) => {
-    const response = await fetch(`${environments.API_URL}/users/logout`, {
+export const adminLogout = async (token) => {
+    const response = await fetch(`${environments.API_URL}/admins/logout`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`,

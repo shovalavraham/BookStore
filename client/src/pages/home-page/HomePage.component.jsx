@@ -4,6 +4,7 @@ import Loader from '../../components/shared/loader/Loader.component';
 import environments from '../../environments/environments';
 import { LOADER_TIMEOUT } from '../../constants/constants.js';
 import './home-page.styles.css';
+import { getAllBooks } from '../../services/book.service';
 
 const HomePage = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -13,14 +14,8 @@ const HomePage = () => {
     useEffect(() => {
         const getBooks = async () => {
             try {
-                const response = await fetch(`${environments.API_URL}/books`);
-
-                if(!response.status) {
-                    throw new Error();
-                }
-
-                const responseObj = await response.json();
-                setBooksState(responseObj.data);
+                const response = await getAllBooks();
+                setBooksState(response.data);
                 //setFilterdBooksState(responseObj.data);
 
                 setTimeout(() => {

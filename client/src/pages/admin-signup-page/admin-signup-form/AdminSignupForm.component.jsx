@@ -8,6 +8,7 @@ import FormInput from "../../../components/form-input/FormInput.component";
 import { AdminAuthContext } from '../../../contexts/AdminAuth.context';
 import environments from "../../../environments/environments.js";
 import signupReducer, { SIGNUP_STATE_INIT } from "../../../reducers/signup.reducer";
+import { adminSignup } from "../../../services/admin.service";
 import './admin-signup-form.styles.css';
 
 const AdminSignupForm = () => {
@@ -91,18 +92,7 @@ const AdminSignupForm = () => {
             }
             
             try {
-                const response = await fetch(`${environments.API_URL}/admins/new`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${adminToken}`,
-                    },
-                    body: JSON.stringify(data),
-                });
-
-                if(response.status !== 201) {
-                    throw new Error();
-                }
+                await adminSignup(adminToken, data);
 
                 alert("New admin created successfully");
 
