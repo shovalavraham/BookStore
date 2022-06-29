@@ -13,6 +13,7 @@ import CartContextProvider from "./contexts/Cart.context";
 import AdminLoginPage from "./pages/admin-login-page/AdminLoginPage.component";
 import AdminAuthContextProvider from "./contexts/AdminAuth.context";
 import AdminDashboardPage from "./pages/admin-dashboard-page/AdminDashboardPage.component";
+import AdminSignupPage from "./pages/admin-signup-page/AdminSignupPage.component";
 
 const App = () => {
   return ( 
@@ -29,6 +30,7 @@ const App = () => {
               <Route path="signup" element={<SignupPage/>}/>
               <Route path="books/:id" element={<BookPage/>}/>
               <Route path="admin" element={<AdminLoginPage/>}/>
+              <Route path="admin/new" element={<AdminSignupPage/>}/>
               <Route path="admin/dashboard" element={<AdminDashboardPage/>}/>
               <Route path="*" element={<PageNotFound/>}/>
             </Routes>

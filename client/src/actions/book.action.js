@@ -9,7 +9,7 @@ const bookActionTypes  = {
     RESET_BOOK: 'RESET_BOOK',
 };
 
-export const loadBook = (value) => {
+export const loadBookAction = (value) => {
     const action = {
         type: bookActionTypes.LOAD_BOOK,
         payload: {
@@ -33,7 +33,7 @@ export const updateAction = (type, value, isValid, message) => {
     return action;
 };
 
-export const resetBook = () => {
+export const resetBookAction = () => {
     const action = {
         type: bookActionTypes.RESET_BOOK,
         payload: {},

@@ -4,7 +4,7 @@ import adminAuth from '../middlewares/admin.auth.js';
 
 const router = express.Router();
 
-router.post('/admins/new', adminController.createAdmin);
+router.post('/admins/new', adminAuth, adminController.createAdmin);
 
 router.post('/admins/login', adminController.login);
 

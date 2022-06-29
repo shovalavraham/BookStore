@@ -4,6 +4,7 @@ import './admin-login-page.styles.css';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminLoginForm from "./admin-login-form/AdminLoginForm.component";
+import { LOADER_TIMEOUT } from '../../constants/constants.js';
 
 const AdminLoginPage = () => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const AdminLoginPage = () => {
 
         setTimeout(() => {
             setIsLoading(false);
-        }, 2000);
+        }, LOADER_TIMEOUT);
     }, []);
 
     return isLoading ? (

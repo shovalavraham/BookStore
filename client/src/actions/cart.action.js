@@ -5,7 +5,7 @@ const cartActionTypes = {
     UPDATE_PRICE: 'UPDATE_PRICE',
 };
 
-export const initCart = (cart) => {
+export const initCartAction = (cart) => {
     const action = {
         type: cartActionTypes.INIT_CART,
         payload: {
@@ -16,7 +16,7 @@ export const initCart = (cart) => {
     return action;
 };
 
-export const updateCart = (cart, price, bookPrice , bookQuantity) => {
+export const updateCartAction = (cart, price, bookPrice , bookQuantity) => {
     const action = {
         type: cartActionTypes.UPDATE_CART,
         payload: {
@@ -30,7 +30,7 @@ export const updateCart = (cart, price, bookPrice , bookQuantity) => {
     return action;
 };
 
-export const checkoutCart = (cart) => {
+export const checkoutCartAction = (cart) => {
     const action = {
         type: cartActionTypes.CHECKOUT_CART,
         payload: {
@@ -41,7 +41,7 @@ export const checkoutCart = (cart) => {
     return action;
 };
 
-export const updatePrice = (cart, bookID, quantity, sign) => {
+export const updatePriceAction = (cart, bookID, quantity, sign) => {
     const action = {
         type: cartActionTypes.UPDATE_PRICE,
         payload: {

@@ -4,6 +4,7 @@ import Loader from '../../components/shared/loader/Loader.component';
 import { AuthContext } from '../../contexts/Auth.context.js';
 import './signup-page.styles.css';
 import SignupForm from './signup-form/SignupForm.component';
+import { LOADER_TIMEOUT } from '../../constants/constants.js';
 
 const SignupPage = () => {
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ const SignupPage = () => {
 
         setTimeout(() => {
             setIsLoading(false);
-        }, 2000);
+        }, LOADER_TIMEOUT);
     }, []);
 
     return isLoading ? (

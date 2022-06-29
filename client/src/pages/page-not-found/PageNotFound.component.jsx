@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/shared/loader/Loader.component';
+import { LOADER_TIMEOUT } from '../../constants/constants.js';
 import './page-not-found.styles.css';
 
 const PageNotFound = () => {
@@ -15,7 +16,7 @@ const PageNotFound = () => {
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false);
-        }, 2000);
+        }, LOADER_TIMEOUT);
     }, []);
 
 

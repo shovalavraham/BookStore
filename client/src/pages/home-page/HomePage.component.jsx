@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BookCard from '../../components/book-card/BookCard.component';
 import Loader from '../../components/shared/loader/Loader.component';
 import environments from '../../environments/environments';
+import { LOADER_TIMEOUT } from '../../constants/constants.js';
 import './home-page.styles.css';
 
 const HomePage = () => {
@@ -24,7 +25,7 @@ const HomePage = () => {
 
                 setTimeout(() => {
                     setIsLoading(false);
-                }, 2000);
+                }, LOADER_TIMEOUT);
     
             } catch (error) {
                 alert("Something went wrong!");

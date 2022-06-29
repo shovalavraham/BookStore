@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState, useContext } from "react";
-import { initCart, updateCart } from "../../../actions/cart.action.js";
+import { initCartAction, updateCartAction } from "../../../actions/cart.action.js";
 import Loader from "../../../components/shared/loader/Loader.component.jsx";
 import { AuthContext } from "../../../contexts/Auth.context.js";
 import { CartContext } from "../../../contexts/Cart.context.js";
@@ -8,8 +8,11 @@ import environments from '../../../environments/environments.js'
 import QuantityBtn from "../../../components/quantity-btn/QuantityBtn.component";
 import BookDetails from "./book-details/BookDetails.component.jsx";
 import './cart-container.styles.css';
+import { useNavigate } from "react-router-dom";
+import { LOADER_TIMEOUT } from '../../../constants/constants.js';
 
 const CartContainer = () => {
+    const navigate = useNavigate();
     const authContextValue = useContext(AuthContext);
     const cartContextValue = useContext(CartContext);
 
@@ -17,6 +20,11 @@ const CartContainer = () => {
 
     useEffect(() => {
         const token = authContextValue.userToken;
+
+        if(!token) {
+            navigate("/login");
+            return;
+        }
 
         const getCart = async () => {
             try {
@@ -32,11 +40,11 @@ const CartContainer = () => {
                 const responseObj = await response.json();
                 const cart = responseObj.data;
 
-                cartContextValue.dispatchCartState(initCart(cart));
+                cartContextValue.dispatchCartState(initCartAction(cart));
                 
                 setTimeout(() => {
                     setIsLoading(false);
-                }, 2000);
+                }, LOADER_TIMEOUT);
                 
             } catch (error) {
                 alert("Something went wrong!");
@@ -74,7 +82,7 @@ const CartContainer = () => {
            const cart = responseObj.data;
 
            const price = cartContextValue.cartState.price;
-           cartContextValue.dispatchCartState(updateCart(cart, price, bookPrice, bookQuantity));
+           cartContextValue.dispatchCartState(updateCartAction(cart, price, bookPrice, bookQuantity));
 
         } catch (error) {
             alert("Something went wrong!");

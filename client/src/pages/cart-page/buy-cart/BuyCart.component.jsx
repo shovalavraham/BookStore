@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext } from "react";
-import { checkoutCart } from "../../../actions/cart.action";
+import { checkoutCartAction } from "../../../actions/cart.action";
 import { AuthContext } from "../../../contexts/Auth.context";
 import { CartContext } from "../../../contexts/Cart.context";
 import environments from "../../../environments/environments";
@@ -28,7 +28,7 @@ const BuyCart = () => {
             const responseObj = await response.json();
             const cart = responseObj.data;
 
-            cartContextValue.dispatchCartState(checkoutCart(cart));
+            cartContextValue.dispatchCartState(checkoutCartAction(cart));
             alert('Checkout was done successfully!');
 
         } catch (error) {

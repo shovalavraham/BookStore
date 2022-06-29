@@ -6,7 +6,7 @@ import { AdminAuthContext } from "../../../contexts/AdminAuth.context";
 import environments from '../../../environments/environments.js'
 import './sidebar.styles.css';
 
-const Sidebar = (props) => {
+const Sidebar = ({className, hideSidebar}) => {
     const navigate = useNavigate();
     const authContextValue = useContext(AuthContext);
     const adminAuthContextValue = useContext(AdminAuthContext);
@@ -65,21 +65,21 @@ const Sidebar = (props) => {
             adminLogout(adminToken);
         }
         
-        props.hideSidebar();
+        hideSidebar();
         alert('Logout successfully!');
         navigate("/");
     };
 
     return (
-        <div className={`sidebar-background ${props.className}`}>
+        <div className={`sidebar-background ${className}`}>
             <div className="sidebar">
-                <button className="close-btn" onClick={props.hideSidebar}>X</button>
+                <button className="close-btn" onClick={hideSidebar}>X</button>
 
                 <div className="sidebar-links">
-                    <Link to="/" className="sidebar-link" onClick={props.hideSidebar}>Home</Link>
-                    {userToken && <Link to="cart" className="sidebar-link" onClick={props.hideSidebar}>Cart</Link>}
-                    {adminToken && <Link to="admin/dashboard" className="sidebar-link" onClick={props.hideSidebar}>Dashboard</Link>}
-                    {!userToken && <Link to="login" className="sidebar-link" onClick={props.hideSidebar}>Login</Link>}
+                    <Link to="/" className="sidebar-link" onClick={hideSidebar}>Home</Link>
+                    {userToken && <Link to="cart" className="sidebar-link" onClick={hideSidebar}>Cart</Link>}
+                    {adminToken && <Link to="admin/dashboard" className="sidebar-link" onClick={hideSidebar}>Dashboard</Link>}
+                    {!userToken && <Link to="login" className="sidebar-link" onClick={hideSidebar}>Login</Link>}
                     {(userToken || adminToken) && <button className="logout-btn" onClick={handleLogout}>Logout</button>}
                 </div>
             </div>

@@ -1,14 +1,14 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import Loader from "../../components/shared/loader/Loader.component";
 import { AuthContext } from '../../contexts/Auth.context.js';
 import { CartContext } from '../../contexts/Cart.context';
 import './book-page.styles.css';
-import { useContext } from "react";
 import environments from '../../environments/environments.js'
-import { initCart } from "../../actions/cart.action";
+import { initCartAction } from "../../actions/cart.action";
 import QuantityBtn from "../../components/quantity-btn/QuantityBtn.component";
+import { LOADER_TIMEOUT } from '../../constants/constants.js';
 
 const BookPage = () => {
     const navigate = useNavigate();
@@ -49,7 +49,7 @@ const BookPage = () => {
 
         setTimeout(() => {
             setIsLoading(false);
-        }, 2000);
+        }, LOADER_TIMEOUT);
     }, []);
 
     useEffect(() => {
@@ -69,7 +69,7 @@ const BookPage = () => {
                 const responseObj = await response.json();
                 const cart = responseObj.data;
 
-                cartContextValue.dispatchCartState(initCart(cart));
+                cartContextValue.dispatchCartState(initCartAction(cart));
                 
             } catch (error) {
                 alert("Something went wrong!");

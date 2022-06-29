@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/shared/loader/Loader.component';
 import './login-page.styles.css';
 import LoginForm from './login-form/LoginForm.component';
+import { LOADER_TIMEOUT } from '../../constants/constants.js';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ const LoginPage = () => {
 
         setTimeout(() => {
             setIsLoading(false);
-        }, 2000);
+        }, LOADER_TIMEOUT);
     }, []);
 
     return isLoading ? (

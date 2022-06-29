@@ -5,7 +5,7 @@ export const createAdmin = async (req, res, next) => {
     const admin = new Admin(data);
 
     try {
-        const token = await admin.generateAuthToken();
+        //const token = await admin.generateAuthToken();
         await admin.save();
 
         res.status(201).send({
@@ -13,7 +13,7 @@ export const createAdmin = async (req, res, next) => {
             statusText: 'Created',
             data: {
                 admin: admin,
-                token: token,
+                //token: token,
             },
             message: "Admin was created successfully",
         });

@@ -1,0 +1,13 @@
+.admin-signup-form {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    border: 0.5px solid black;
+    border-radius: 5px;
+}
+
+.admin-signup-title {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}

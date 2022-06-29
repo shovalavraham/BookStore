@@ -33,9 +33,41 @@
     font-weight: 300;
 }
 
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 40px;
+    background-color: white;
+    box-shadow: 0.1rem 0.1rem 0.2rem 0.1rem rgb(0 0 0 / 10%);
+}
+
+.dashboard-books-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-books-title {
+    margin: 20px;
+    font-size: 26px;
+    font-weight: 300;
+}
+
 .create-book-btn {
     width: fit-content;
-    margin: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.plus-icon {
+    margin-right: 5px;
+}
+
+hr {
+    width: 95%;
+    margin: 0 auto 10px;
+    border: none;
+    border-top: 1.5px solid #E5E9EF;
 }
 
 .dashboard-books-container {
@@ -43,11 +75,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    margin: 20px 40px;
-    padding: 20px 0;
     align-items: flex-start;
-    background-color: white;
-    box-shadow: 0.1rem 0.1rem 0.2rem 0.1rem rgb(0 0 0 / 10%);
 }
 
 .dashboard-book-card {

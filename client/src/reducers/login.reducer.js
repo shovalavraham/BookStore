@@ -16,36 +16,32 @@ export const LOGIN_STATE_INIT = {
 };
 
 const loginReducer = (state, action) => {
+    let key = '';
+
     switch (action.type) {
         case loginActionTypes.UPDATE_EMAIL: {
-            const updatedValues = {...state.values, email: action.payload.value};
-            const updatedValiditeis = {...state.validities, email: action.payload.isValid};
-            const updatedMessages = {...state.messages, email: action.payload.message};
-
-            const updatedState = {
-                values: updatedValues,
-                validities: updatedValiditeis,
-                messages: updatedMessages,
-            }
-
-            return updatedState;
+            key = 'email';
+            break;
         }
         case loginActionTypes.UPDATE_PASSWORD: {
-            const updatedValues = {...state.values, password: action.payload.value};
-            const updatedValiditeis = {...state.validities, password: action.payload.isValid};
-            const updatedMessages = {...state.messages, password: action.payload.message};
-
-            const updatedState = {
-                values: updatedValues,
-                validities: updatedValiditeis,
-                messages: updatedMessages,
-            }
-
-            return updatedState;
+            key = 'password';
+            break;
         }
         default:
             return state;
     }
+
+    const updatedValues = {...state.values, [key]: action.payload.value};
+    const updatedValiditeis = {...state.validities, [key]: action.payload.isValid};
+    const updatedMessages = {...state.messages, [key]: action.payload.message};
+
+    const updatedState = {
+        values: updatedValues,
+        validities: updatedValiditeis,
+        messages: updatedMessages,
+    }
+
+    return updatedState;
 };
 
 export default loginReducer;
