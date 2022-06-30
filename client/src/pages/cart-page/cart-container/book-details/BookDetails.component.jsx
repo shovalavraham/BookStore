@@ -2,20 +2,20 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import './book-details.styles.css';
 
-const BookDetails = (props) => {
+const BookDetails = ({id, title, author, bookCover}) => {
     const navigate = useNavigate();
 
     const handleBookClick = (event) => {
-        navigate(`/books/${props.id}`);
+        navigate(`/books/${id}`);
     };
 
     return (
         <button className="books-details" onClick={handleBookClick}>
-            <img src={props.bookCover} alt="book cover" width="90" height="120"/>
+            <img src={bookCover} alt="book cover" width="90" height="120"/>
 
             <div className="title-author">
-                <h2 className="cart-book-title">{props.title}</h2>
-                <h3 className="cart-book-author">{props.author}</h3>
+                <h2 className="cart-book-title">{title}</h2>
+                <h3 className="cart-book-author">{author}</h3>
             </div>
         </button>
     );

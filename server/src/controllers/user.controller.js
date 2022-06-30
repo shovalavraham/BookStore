@@ -25,8 +25,7 @@ export const createUser = async (req, res, next) => {
 };
 
 export const login = async (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    const {email, password} = req.body;
 
     try {
         if(!email || !password) throw new Error('Unable to loign');
@@ -44,8 +43,7 @@ export const login = async (req, res, next) => {
 };
 
 export const logout = async (req, res, next) => {
-    const user = req.user;
-    const token = req.token;
+    const {user, token} = req;
 
     try {
         user.tokens = user.tokens.filter((tokenDoc) => tokenDoc.token !== token);

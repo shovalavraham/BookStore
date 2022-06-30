@@ -73,7 +73,7 @@ adminSchema.pre('save', async function(next) {
 });
 
 adminSchema.statics.findAdminByEmailAndPassword = async (email, password) => {
-    const admin = await Admin.findOne({email: email});
+    const admin = await Admin.findOne({email});
     if(!admin) throw new Error('Unable to login');
 
     const isPasswordMatch = await bcrypt.compare(password, admin.password);

@@ -21,8 +21,7 @@ export const createAdmin = async (req, res, next) => {
 };
 
 export const login = async (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    const {email, password} = req.body;
 
     try {
         if(!email || !password) throw new Error('Unable to login');
@@ -44,8 +43,7 @@ export const login = async (req, res, next) => {
 };
 
 export const logout = async (req, res, next) => {
-    const admin = req.admin;
-    const token =req.token;
+    const {admin, token} = req;
 
     try {
         if(!admin || !token) throw new Error();

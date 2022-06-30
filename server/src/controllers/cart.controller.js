@@ -44,8 +44,7 @@ export const updateCart = async (req, res, next) => {
 };
 
 export const addBookToCart = async (req, res, next) => {
-    const bookID = req.body.bookID;
-    const quantity = req.body.quantity;
+    const {bookID, quantity} = req.body;
     const user = req.user;
     
     try {
@@ -86,8 +85,7 @@ export const buyCart = async (req, res, next) => {
 
 export const updateQuantity = async (req, res, next) => {
     const userID = req.user._id;
-    const bookID = req.body.bookID;
-    const quantity = req.body.quantity;
+    const {bookID, quantity} = req.body;
 
     try {
         const cart = await Cart.findOne({ownerID: userID});

@@ -21,12 +21,10 @@ const adminAuth = async (req, res, next) => {
 
         next();
     } catch (error) {
-        
-        res.status(401).send({
-            status: 401,
-            statusText: 'Unauthorized',
-            message: ''
-        });
+        error.status = 401;
+        error.statusText = 'Unauthorized';
+        error.message = '';
+        next(error);
     }
 };
 

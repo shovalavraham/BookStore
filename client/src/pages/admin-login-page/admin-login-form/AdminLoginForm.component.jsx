@@ -10,8 +10,8 @@ import './admin-login-form.styles.css';
 
 const AdminLoginForm = () => {
     const navigate = useNavigate();
-    const adminAuthContextValue = useContext(AdminAuthContext);
-    const authContextValue = useContext(AuthContext);
+    const {setAdminToken} = useContext(AdminAuthContext);
+    const {userToken, setUserToken} = useContext(AuthContext);
 
     const [emailState, setEmailStte] = useState('');
     const [passwordState, setPasswordStte] = useState('');
@@ -31,7 +31,7 @@ const AdminLoginForm = () => {
             logout(token);
 
             localStorage.removeItem('user-token');
-            authContextValue.setUserToken(null);
+            setUserToken(null);
 
         } catch (error) {
             alert('Something went wrong!');
@@ -51,9 +51,8 @@ const AdminLoginForm = () => {
             const {token} = response.data;
 
             localStorage.setItem('admin-token', token);
-            adminAuthContextValue.setAdminToken(token);
+            setAdminToken(token);
 
-            const userToken = authContextValue.userToken;
             if(userToken) {
                 userLogout(userToken);
             }

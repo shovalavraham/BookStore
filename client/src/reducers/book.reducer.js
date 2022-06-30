@@ -40,11 +40,11 @@ const bookReducer = (state, action) => {
             return updatedState;
         }
         case bookActionTypes.UPDATE_FORM_FIELD: {
-            const {field} = action.payload;
+            const {value, isValid, message, field} = action.payload;
 
-            const updatedValues = {...state.values, [field]: action.payload.value};
-            const updatedValiditeis = {...state.validities, [field]: action.payload.isValid};
-            const updatedMessages = {...state.messages, [field]: action.payload.message};
+            const updatedValues = {...state.values, [field]: value};
+            const updatedValiditeis = {...state.validities, [field]: isValid};
+            const updatedMessages = {...state.messages, [field]: message};
 
             const updatedState = {
                 values: updatedValues,
