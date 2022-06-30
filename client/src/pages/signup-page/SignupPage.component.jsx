@@ -8,12 +8,12 @@ import { LOADER_TIMEOUT } from '../../constants/constants.js';
 
 const SignupPage = () => {
     const navigate = useNavigate();
-    const authContextValue = useContext(AuthContext);
+    const {userToken} = useContext(AuthContext);
 
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if(authContextValue.userToken) {
+        if(userToken) {
             navigate("/");
         }
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BookCard from '../../components/book-card/BookCard.component';
 import Loader from '../../components/shared/loader/Loader.component';
-import environments from '../../environments/environments';
 import { LOADER_TIMEOUT } from '../../constants/constants.js';
 import './home-page.styles.css';
 import { getAllBooks } from '../../services/book.service';
@@ -45,8 +44,9 @@ const HomePage = () => {
             
             <div className='books-container'>
                 {booksState.map((book) => {
+                    const {_id: id, title, author, bookCover} = book;
                     return (
-                        <BookCard key={book._id} title={book.title} author={book.author} bookCover={book.bookCover} id={book._id}/>
+                        <BookCard key={id} title={title} author={author} bookCover={bookCover} id={id}/>
                     );
                 })}
             </div>

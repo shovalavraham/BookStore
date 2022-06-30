@@ -16,32 +16,25 @@ export const LOGIN_STATE_INIT = {
 };
 
 const loginReducer = (state, action) => {
-    let key = '';
-
     switch (action.type) {
-        case loginActionTypes.UPDATE_EMAIL: {
-            key = 'email';
-            break;
-        }
-        case loginActionTypes.UPDATE_PASSWORD: {
-            key = 'password';
-            break;
+        case loginActionTypes.UPDATE_FORM_FIELD: {
+            const {field} = action.payload;
+            
+            const updatedValues = {...state.values, [field]: action.payload.value};
+            const updatedValiditeis = {...state.validities, [field]: action.payload.isValid};
+            const updatedMessages = {...state.messages, [field]: action.payload.message};
+
+            const updatedState = {
+                values: updatedValues,
+                validities: updatedValiditeis,
+                messages: updatedMessages,
+            }
+
+            return updatedState;
         }
         default:
             return state;
     }
-
-    const updatedValues = {...state.values, [key]: action.payload.value};
-    const updatedValiditeis = {...state.validities, [key]: action.payload.isValid};
-    const updatedMessages = {...state.messages, [key]: action.payload.message};
-
-    const updatedState = {
-        values: updatedValues,
-        validities: updatedValiditeis,
-        messages: updatedMessages,
-    }
-
-    return updatedState;
 };
 
 export default loginReducer;

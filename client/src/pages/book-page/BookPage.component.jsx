@@ -5,7 +5,6 @@ import Loader from "../../components/shared/loader/Loader.component";
 import { AuthContext } from '../../contexts/Auth.context.js';
 import { CartContext } from '../../contexts/Cart.context';
 import './book-page.styles.css';
-import environments from '../../environments/environments.js'
 import { initCartAction } from "../../actions/cart.action";
 import QuantityBtn from "../../components/quantity-btn/QuantityBtn.component";
 import { LOADER_TIMEOUT } from '../../constants/constants.js';
@@ -14,8 +13,8 @@ import { addBookToCart, getCart, updateQuantity } from "../../services/cart.serv
 
 const BookPage = () => {
     const navigate = useNavigate();
-    const authContextValue = useContext(AuthContext);
-    const cartContextValue = useContext(CartContext);
+    const {userToken} = useContext(AuthContext);
+    const {cartState, dispatchCartState} = useContext(CartContext);
 
     const [isLoading, setIsLoading] = useState(true);
     const [bookState, setBookState] = useState(null);
@@ -49,25 +48,23 @@ const BookPage = () => {
     }, []);
 
     useEffect(() => {
-        const token = authContextValue.userToken;
-
         const geUsertCart = async () => {
             try {
-                const response = await getCart(token);
+                const response = await getCart(userToken);
                 const cart = response.data;
 
-                cartContextValue.dispatchCartState(initCartAction(cart));
+                dispatchCartState(initCartAction(cart));
                 
             } catch (error) {
                 alert("Something went wrong!");
             }
         };
 
-        if(token) {
+        if(userToken) {
             geUsertCart();
         }
 
-    }, [cartContextValue.cartState]);
+    }, [cartState]);
 
     const handleUpdateQuantity = async (token, bookID, quantity) => {
 
@@ -80,17 +77,14 @@ const BookPage = () => {
     }
 
     const handleAddToCart = async () => {
-        const token = authContextValue.userToken;
-
-        if(!token) {
+        if(!userToken) {
             alert("You need to login first!");
             return;
         }
 
         let updatedQuantity = quantityState;
 
-        const cart = cartContextValue.cartState;
-        const book = cart.books.find(book => book.bookID._id === id);
+        const book = cartState.books.find(book => book.bookID._id === id);
 
         if(book) {
             updatedQuantity += book.quantity;
@@ -100,13 +94,13 @@ const BookPage = () => {
                 return;
             }
 
-            handleUpdateQuantity(token, book.bookID._id, updatedQuantity);
+            handleUpdateQuantity(userToken, book.bookID._id, updatedQuantity);
             alert('Book was added successfully!');
             return;
         }
         
         try {
-            await addBookToCart(token, id, updatedQuantity);
+            await addBookToCart(userToken, id, updatedQuantity);
 
             alert('Book was added successfully!');
 
@@ -121,6 +115,7 @@ const BookPage = () => {
         <main className="book-page">
             <div className="book-container">
                 <img src={bookState.bookCover} alt='book cover' width="300" height="500"/>
+                
                 <div className="details">
                     <h1 className="book-title">{bookState.title}</h1>
 

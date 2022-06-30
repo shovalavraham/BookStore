@@ -4,7 +4,6 @@ import { initCartAction, updateCartAction } from "../../../actions/cart.action.j
 import Loader from "../../../components/shared/loader/Loader.component.jsx";
 import { AuthContext } from "../../../contexts/Auth.context.js";
 import { CartContext } from "../../../contexts/Cart.context.js";
-import environments from '../../../environments/environments.js'
 import QuantityBtn from "../../../components/quantity-btn/QuantityBtn.component";
 import BookDetails from "./book-details/BookDetails.component.jsx";
 import './cart-container.styles.css';

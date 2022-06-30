@@ -3,25 +3,21 @@ import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from '../../../contexts/Auth.context';
 import { AdminAuthContext } from "../../../contexts/AdminAuth.context";
-import environments from '../../../environments/environments.js'
 import './sidebar.styles.css';
 import { logout } from "../../../services/user.service";
-import { adminLogin } from "../../../services/admin.service";
+import { adminLogout } from "../../../services/admin.service";
 
 const Sidebar = ({className, hideSidebar}) => {
     const navigate = useNavigate();
-    const authContextValue = useContext(AuthContext);
-    const adminAuthContextValue = useContext(AdminAuthContext);
-    
-    const userToken = authContextValue.userToken;
-    const adminToken = adminAuthContextValue.adminToken;
+    const {userToken, setUserToken} = useContext(AuthContext);
+    const {adminToken, setAdminToken} = useContext(AdminAuthContext);
 
     const handleAdminLogout = async (token) => {
         try {
-            await adminLogin(token);
+            await adminLogout(token);
 
             localStorage.removeItem('admin-token');
-            adminAuthContextValue.setAdminToken(null);
+            setAdminToken(null);
 
         } catch (error) {
             alert('Something went wrong!');
@@ -33,7 +29,7 @@ const Sidebar = ({className, hideSidebar}) => {
             logout(token);
 
             localStorage.removeItem('user-token');
-            authContextValue.setUserToken(null);
+            setUserToken(null);
 
         } catch (error) {
             alert('Something went wrong!');

@@ -2,16 +2,15 @@ import React from "react";
 import { useState, useEffect, useReducer, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/shared/loader/Loader.component";
-import environments from "../../environments/environments";
 import './admin-dashboard-page.styles.css';
 import bookReducer, { BOOK_STATE_INIT } from "../../reducers/book.reducer";
 import { loadBookAction, resetBookAction } from "../../actions/book.action";
 import BookModal from "../../components/book-modal/BookModal.component";
 import { AdminAuthContext } from '../../contexts/AdminAuth.context';
-import { BsGraphUp } from 'react-icons/bs';
 import { FaPlus } from 'react-icons/fa';
 import { LOADER_TIMEOUT } from '../../constants/constants.js';
 import { createBook, deleteBook, getAllBooks, updateBook } from "../../services/book.service";
+import AdminDashboardHeader from "./admin-dashboard-header/AdminDashboardHeader.component";
 
 const AdminDashboardPage = () => {
     const navigate = useNavigate();
@@ -98,6 +97,7 @@ const AdminDashboardPage = () => {
                 
                 handleClose();
             } catch (error) {
+                setIsMoadlLoading(false);
                 alert("Something went wrong!");
             }
         }
@@ -127,6 +127,7 @@ const AdminDashboardPage = () => {
                 handleClose();
 
             } catch (error) {
+                setIsMoadlLoading(false);
                 alert("Something went wrong!");
             }
         }
@@ -151,26 +152,16 @@ const AdminDashboardPage = () => {
             handleClose();
 
         } catch (error) {
+            setIsMoadlLoading(false);
             alert("Something went wrong!");
         }
     };
-
-    const createNewAdmin = () => {
-        navigate("/admin/new");
-    }
     
     return isLoading ? (
         <Loader/>
     ) : (
         <main className='admin-dashboard-page'>
-            <div className="dashboard-header">
-                <div className="dashboard-title-icon">
-                    <BsGraphUp className="dashboard-icon"/>
-                    <h1 className="dashboard-title">Admin Dashboard</h1>
-                </div>
-
-                <button className="btn-design" onClick={createNewAdmin}>Create New Admin</button>
-            </div>
+            <AdminDashboardHeader/>
 
             <div className='dashboard-container'>
                 <div className="dashboard-books-header">

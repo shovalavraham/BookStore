@@ -3,20 +3,19 @@ import { useContext, useReducer } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import isEmail from "validator/lib/isEmail";
 import isStrongPassword from "validator/lib/isStrongPassword";
-import loginActionTypes, { updateAction } from "../../../actions/login.action";
+import { updateAction } from "../../../actions/login.action";
 import FormInput from "../../../components/form-input/FormInput.component";
 import loginReducer, { LOGIN_STATE_INIT } from "../../../reducers/login.reducer";
 import { AuthContext } from '../../../contexts/Auth.context';
 import { AdminAuthContext } from "../../../contexts/AdminAuth.context";
-import environments from '../../../environments/environments.js'
 import './login-form.styles.css';
 import { login } from "../../../services/user.service";
 import { adminLogout } from "../../../services/admin.service";
 
 const LoginForm = () => {
     const navigate = useNavigate();
-    const authContextValue = useContext(AuthContext);
-    const adminAuthContextValue = useContext(AdminAuthContext);
+    const {setUserToken} = useContext(AuthContext);
+    const {adminToken, setAdminToken} = useContext(AdminAuthContext);
 
     const [loginState, dispatchLoginState] = useReducer(loginReducer, LOGIN_STATE_INIT);
 
@@ -24,22 +23,22 @@ const LoginForm = () => {
         const email = event.target.value.trim();
 
         if(!isEmail(email)) {
-            dispatchLoginState(updateAction(loginActionTypes.UPDATE_EMAIL, email, false, "Email is invalid"));
+            dispatchLoginState(updateAction(email, false, "Email is invalid", 'email'));
             return;
         }
 
-        dispatchLoginState(updateAction(loginActionTypes.UPDATE_EMAIL, email, true, ""));
+        dispatchLoginState(updateAction(email, true, "", 'email'));
     };
 
     const handlePasswordInput = (event) => {
         const password = event.target.value.trim();
 
         if(!isStrongPassword(password, {minSymbols: 0})) {
-            dispatchLoginState(updateAction(loginActionTypes.UPDATE_PASSWORD, password, false, "Password must be at least 8 charachters, and must contain at least 1 Uppercase charachter, 1 Lowercase charachter and 1 Number"));
+            dispatchLoginState(updateAction(password, false, "Password must be at least 8 charachters, and must contain at least 1 Uppercase charachter, 1 Lowercase charachter and 1 Number", 'password'));
             return;
         }
 
-        dispatchLoginState(updateAction(loginActionTypes.UPDATE_PASSWORD, password, true, ""));
+        dispatchLoginState(updateAction(password, true, "", 'password'));
     };
 
     const handleAdminLogout = async (token) => {
@@ -47,7 +46,7 @@ const LoginForm = () => {
             await adminLogout(token);
 
             localStorage.removeItem('admin-token');
-            adminAuthContextValue.setAdminToken(null);
+            setAdminToken(null);
 
         } catch (error) {
             alert('Something went wrong!');
@@ -68,9 +67,8 @@ const LoginForm = () => {
                 const {token} = response.data;
 
                 localStorage.setItem('user-token', token);
-                authContextValue.setUserToken(token);
+                setUserToken(token);
 
-                const adminToken = adminAuthContextValue.adminToken;
                 if(adminToken) {
                     handleAdminLogout(adminToken);
                 }

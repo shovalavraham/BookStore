@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import FormInput from "../../../components/form-input/FormInput.component";
 import { AdminAuthContext } from '../../../contexts/AdminAuth.context.js';
 import { AuthContext } from '../../../contexts/Auth.context.js';
-import environments from '../../../environments/environments.js';
 import { adminLogin } from "../../../services/admin.service";
 import { logout } from "../../../services/user.service";
 import './admin-login-form.styles.css';

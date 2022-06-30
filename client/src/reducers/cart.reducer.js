@@ -23,9 +23,8 @@ const cartReducer = (state, action) => {
             return updatedState;
         }
         case cartActionTypes.UPDATE_CART: {
-            const cart = action.payload.cart;
-            const bookPrice = action.payload.bookPrice;
-            const bookQuantity = action.payload.bookQuantity;
+            const {cart, bookPrice, bookQuantity} = action.payload;
+            
             const price = action.payload.price - (bookPrice * bookQuantity);
 
             const updatedState = {
@@ -46,10 +45,7 @@ const cartReducer = (state, action) => {
             return updatedState;
         }
         case cartActionTypes.UPDATE_PRICE: {
-            const cart = action.payload.cart;
-            const bookID = action.payload.bookID;
-            const quantity = action.payload.quantity;
-            const sign = action.payload.sign;
+            const {cart, bookID, quantity, sign} = action.payload;
   
             const book = cart.books.find(book => book.bookID._id === bookID);
             const bookPrice = book.bookID.price;

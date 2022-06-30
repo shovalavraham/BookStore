@@ -1,4 +1,5 @@
 import Cart from "../models/cart.model.js";
+import { SuccessResponse } from '../models/response.model.js';
 
 export const getCart = async (req, res, next) => {
     const userID = req.user._id;
@@ -9,12 +10,7 @@ export const getCart = async (req, res, next) => {
 
         await cart.populate('books.bookID');
 
-        res.status(200).send({
-            status: 200,
-            statusText: 'Ok',
-            data: cart,
-            message: "",
-        });
+        res.status(200).send(new SuccessResponse(200, 'Ok', "", cart));
 
     } catch (error) {
         error.status = 500;
@@ -37,12 +33,7 @@ export const updateCart = async (req, res, next) => {
 
         await cart.save();
 
-        res.status(202).send({
-            status: 202,
-            statusText: "Accepted",
-            data: cart,
-            message: "Cart was update successfully",
-        });
+        res.status(202).send(new SuccessResponse(202, 'Accepted', "Cart was update successfully", cart));
         
     } catch (error) {
         error.status = 500;
@@ -65,12 +56,7 @@ export const addBookToCart = async (req, res, next) => {
 
         await cart.save();
 
-        res.status(200).send({
-            status: 200,
-            statusText: 'Ok',
-            data: cart,
-            message: 'Book added',
-        })
+        res.status(200).send(new SuccessResponse(200, 'Ok', "Book added", cart));
         
     } catch (error) {
         error.status = 400;
@@ -88,12 +74,7 @@ export const buyCart = async (req, res, next) => {
         cart.books = [];
         await cart.save();
 
-        res.status(202).send({
-            status: 202,
-            statusText: "Accepted",
-            data: cart,
-            message: "The purchase was made successfully",
-        });
+        res.status(202).send(new SuccessResponse(200, 'Accepted', "The purchase was made successfully", cart));
 
     } catch (error) {
         error.status = 500;
@@ -115,12 +96,7 @@ export const updateQuantity = async (req, res, next) => {
 
         await cart.save();
 
-        res.status(202).send({
-            status: 202,
-            statusText: "Accepted",
-            data: cart,
-            message: "Book quantity was update successfully",
-        });
+        res.status(202).send(new SuccessResponse(200, 'Accepted', "Book quantity was update successfully", cart));
 
     } catch (error) {
         error.status = 500;

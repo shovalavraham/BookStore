@@ -39,75 +39,12 @@ const bookReducer = (state, action) => {
             
             return updatedState;
         }
-        case bookActionTypes.UPDATE_TITLE: {
-            const updatedValues = {...state.values, title: action.payload.value};
-            const updatedValiditeis = {...state.validities, title: action.payload.isValid};
-            const updatedMessages = {...state.messages, title: action.payload.message};
+        case bookActionTypes.UPDATE_FORM_FIELD: {
+            const {field} = action.payload;
 
-            const updatedState = {
-                values: updatedValues,
-                validities: updatedValiditeis,
-                messages: updatedMessages,
-            }
-            
-            return updatedState;
-        }
-        case bookActionTypes.UPDATE_AUTHOR: {
-            const updatedValues = {...state.values, author: action.payload.value};
-            const updatedValiditeis = {...state.validities, author: action.payload.isValid};
-            const updatedMessages = {...state.messages, author: action.payload.message};
-
-            const updatedState = {
-                values: updatedValues,
-                validities: updatedValiditeis,
-                messages: updatedMessages,
-            }
-            
-            return updatedState;
-        }
-        case bookActionTypes.UPDATE_BOOK_COVER: {
-            const updatedValues = {...state.values, bookCover: action.payload.value};
-            const updatedValiditeis = {...state.validities, bookCover: action.payload.isValid};
-            const updatedMessages = {...state.messages, bookCover: action.payload.message};
-
-            const updatedState = {
-                values: updatedValues,
-                validities: updatedValiditeis,
-                messages: updatedMessages,
-            }
-            
-            return updatedState;
-        }
-        case bookActionTypes.UPDATE_DESCRIPTION: {
-            const updatedValues = {...state.values, description: action.payload.value};
-            const updatedValiditeis = {...state.validities, description: action.payload.isValid};
-            const updatedMessages = {...state.messages, description: action.payload.message};
-
-            const updatedState = {
-                values: updatedValues,
-                validities: updatedValiditeis,
-                messages: updatedMessages,
-            }
-            
-            return updatedState;
-        }
-        case bookActionTypes.UPDATE_PAGE: {
-            const updatedValues = {...state.values, pages: action.payload.value};
-            const updatedValiditeis = {...state.validities, pages: action.payload.isValid};
-            const updatedMessages = {...state.messages, pages: action.payload.message};
-
-            const updatedState = {
-                values: updatedValues,
-                validities: updatedValiditeis,
-                messages: updatedMessages,
-            }
-            
-            return updatedState;
-        }
-        case bookActionTypes.UPDATE_PRICE: {
-            const updatedValues = {...state.values, price: action.payload.value};
-            const updatedValiditeis = {...state.validities, price: action.payload.isValid};
-            const updatedMessages = {...state.messages, price: action.payload.message};
+            const updatedValues = {...state.values, [field]: action.payload.value};
+            const updatedValiditeis = {...state.validities, [field]: action.payload.isValid};
+            const updatedMessages = {...state.messages, [field]: action.payload.message};
 
             const updatedState = {
                 values: updatedValues,

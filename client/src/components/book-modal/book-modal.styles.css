@@ -34,38 +34,6 @@
     color: white;
 }
 
-.description-container {
-    display: flex;
-    flex-direction: column;
-    margin: 8px 16px;
-}
-
-.description-label {
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.description-input {
-    resize: none;
-    margin-top: 4px;
-    padding: 8px 5px;
-    border: 1px solid rgb(169, 167, 167);
-    border-radius: 5px;
-    background-color: rgb(250, 250, 250);
-}
-
-.description-input:focus {
-    outline: none;
-   border: 2px solid #008f3b;
-}
-
-.error-message {
-    font-weight: 600;
-    font-size: 12px;
-    margin-top: 2px;
-    color: red;
-}
-
 .visible {
     visibility: visible;
 }

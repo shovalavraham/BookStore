@@ -4,19 +4,18 @@ import { Link, useNavigate } from "react-router-dom";
 import FormInput from "../../../components/form-input/FormInput.component";
 import signupReducer, { SIGNUP_STATE_INIT } from "../../../reducers/signup.reducer";
 import { AuthContext } from '../../../contexts/Auth.context.js';
-import signupActionTypes, { updateAction } from "../../../actions/signup.action";
+import { updateAction } from "../../../actions/signup.action";
 import './signup-form.styles.css';
 import isEmail from "validator/lib/isEmail";
 import isStrongPassword from "validator/lib/isStrongPassword";
-import environments from '../../../environments/environments.js'
 import { AdminAuthContext } from "../../../contexts/AdminAuth.context";
 import { signup } from "../../../services/user.service";
 import { adminLogout } from "../../../services/admin.service";
 
 const SignupForm = () => {
     const navigate = useNavigate();
-    const authContextValue = useContext(AuthContext);
-    const adminAuthContextValue = useContext(AdminAuthContext);
+    const {setUserToken} = useContext(AuthContext);
+    const {adminToken, setAdminToken} = useContext(AdminAuthContext);
 
     const [signupState, dispatchSignupState] = useReducer(signupReducer, SIGNUP_STATE_INIT);
 
@@ -24,55 +23,55 @@ const SignupForm = () => {
         const firstname = event.target.value.trim();
 
         if(firstname === '') {
-            dispatchSignupState(updateAction(signupActionTypes.UPDATE_FIRSTNAME, firstname, false, "First Name must have at least 1 char"));
+            dispatchSignupState(updateAction(firstname, false, "First Name must have at least 1 char", 'firstname'));
             return;
         }
         
-        dispatchSignupState(updateAction(signupActionTypes.UPDATE_FIRSTNAME, firstname, true, ""));
+        dispatchSignupState(updateAction(firstname, true, "", 'firstname'));
     };
 
     const handleLastnameInput = (event) => {
         const lastname = event.target.value.trim();
 
         if(lastname === '') {
-            dispatchSignupState(updateAction(signupActionTypes.UPDATE_LASTNAME, lastname, false, "Last Name must have at least 1 char"));
+            dispatchSignupState(updateAction(lastname, false, "Last Name must have at least 1 char", 'lastname'));
             return;
         }
         
-        dispatchSignupState(updateAction(signupActionTypes.UPDATE_LASTNAME, lastname, true, ""));
+        dispatchSignupState(updateAction(lastname, true, "", 'lastname'));
     };
 
     const handleEmailInput = (event) => {
         const email = event.target.value.trim();
 
         if(!isEmail(email)) {
-            dispatchSignupState(updateAction(signupActionTypes.UPDATE_EMAIL, email, false, "Email is invalid"));
+            dispatchSignupState(updateAction(email, false, "Email is invalid", 'email'));
             return;
         }
         
-        dispatchSignupState(updateAction(signupActionTypes.UPDATE_EMAIL, email, true, ""));
+        dispatchSignupState(updateAction(email, true, "", 'email'));
     };
 
     const handlePasswordInput = (event) => {
         const password = event.target.value.trim();
 
         if(!isStrongPassword(password, {minSymbols: 0})) {
-            dispatchSignupState(updateAction(signupActionTypes.UPDATE_PASSWORD, password, false, "Password must be at least 8 charachters, and must contain at least 1 Uppercase charachter, 1 Lowercase charachter and 1 Number"));
+            dispatchSignupState(updateAction(password, false, "Password must be at least 8 charachters, and must contain at least 1 Uppercase charachter, 1 Lowercase charachter and 1 Number", 'password'));
             return;
         }
         
-        dispatchSignupState(updateAction(signupActionTypes.UPDATE_PASSWORD, password, true, ""));
+        dispatchSignupState(updateAction(password, true, "", 'password'));
     };
 
     const handleRepeatPasswordInput = (event) => {
         const repeatPassword = event.target.value.trim();
 
         if(repeatPassword !== signupState.values.password) {
-            dispatchSignupState(updateAction(signupActionTypes.UPDATE_REPEAT_PASSWORD, repeatPassword, false, "Please enter your password again"));
+            dispatchSignupState(updateAction(repeatPassword, false, "Please enter your password again", 'repeatPassword'));
             return;
         }
         
-        dispatchSignupState(updateAction(signupActionTypes.UPDATE_REPEAT_PASSWORD, repeatPassword, true, ""));
+        dispatchSignupState(updateAction(repeatPassword, true, "", 'repeatPassword'));
     };
 
     const handleAdminLogout = async (token) => {
@@ -80,7 +79,7 @@ const SignupForm = () => {
             adminLogout(token);
 
             localStorage.removeItem('admin-token');
-            adminAuthContextValue.setAdminToken(null);
+            setAdminToken(null);
 
         } catch (error) {
             alert('Something went wrong!');
@@ -90,8 +89,7 @@ const SignupForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const signupValidities = signupState.validities;
-        const signupValues = signupState.values;
+        const {values: signupValues, validities: signupValidities} = signupState;
 
         if(signupValidities.firstname &&
             signupValidities.lastname &&
@@ -111,9 +109,8 @@ const SignupForm = () => {
                 const {token} = response.data;
 
                 localStorage.setItem('user-token',token);
-                authContextValue.setUserToken(token);
+                setUserToken(token);
 
-                const adminToken = adminAuthContextValue.adminToken;
                 if(adminToken) {
                     handleAdminLogout(adminToken);
                 }

@@ -24,45 +24,26 @@ export const SIGNUP_STATE_INIT = {
     },
 };
 
-const signupReducer = (state, action) => {
-    let key = '';
-    
+const signupReducer = (state, action) => {    
     switch (action.type) {
-        case signupActionTypes.UPDATE_FIRSTNAME: {
-            key = 'firstname';
-            break;
-        }
-        case signupActionTypes.UPDATE_LASTNAME: {
-            key = 'lastname';
-            break;
-        }
-        case signupActionTypes.UPDATE_EMAIL: {
-            key = 'email';
-            break;
-        }
-        case signupActionTypes.UPDATE_PASSWORD: {
-            key = 'password';
-            break;
-        }
-        case signupActionTypes.UPDATE_REPEAT_PASSWORD: {
-            key = 'repeatPassword';
-            break;
-        }   
+        case signupActionTypes.UPDATE_FORM_FIELD: {
+            const {field} = action.payload;
+            
+            const updatedValues = {...state.values, [field]: action.payload.value};
+            const updatedValiditeis = {...state.validities, [field]: action.payload.isValid};
+            const updatedMessages = {...state.messages, [field]: action.payload.message};
+            
+            const updatedState = {
+                values: updatedValues,
+                validities: updatedValiditeis,
+                messages: updatedMessages,
+            }
+            
+            return updatedState;
+        }  
         default:
             return state;
     }
-
-    const updatedValues = {...state.values, [key]: action.payload.value};
-    const updatedValiditeis = {...state.validities, [key]: action.payload.isValid};
-    const updatedMessages = {...state.messages, [key]: action.payload.message};
-
-    const updatedState = {
-        values: updatedValues,
-        validities: updatedValiditeis,
-        messages: updatedMessages,
-    }
-    
-    return updatedState;
 };
 
 export default signupReducer;

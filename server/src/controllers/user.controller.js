@@ -1,5 +1,6 @@
 import Cart from "../models/cart.model.js";
 import User from "../models/user.model.js";
+import { SuccessResponse } from '../models/response.model.js';
 
 export const createUser = async (req, res, next) => {
     const data = req.body;
@@ -13,15 +14,8 @@ export const createUser = async (req, res, next) => {
         await user.save();
         await cart.save();
         
-        res.status(201).send({
-            status: 201,
-            statusText: 'Created',
-            data: {
-                user: user,
-                token: token,
-            },
-            message: "User was created successfully",
-        });
+        res.status(201).send(new SuccessResponse(200, 'Created', "User was created successfully", {user, token}));
+
     } catch (error) {
         error.status = 400;
         error.statusText = 'Bad request'
@@ -40,15 +34,8 @@ export const login = async (req, res, next) => {
         const user = await User.findUserByEmailAndPassword(email, password);
         const token = await user.generateAuthToken();
 
-        res.status(200).send({
-            status: 200,
-            statusText: 'Ok',
-            data: {
-                user: user,
-                token: token,
-            },
-            message: "Login successfully",
-        });
+        res.status(200).send(new SuccessResponse(200, 'Ok', "Login successfully", {user, token}));
+
     } catch (error) {
         error.status = 400;
         error.statusText = 'Bad request';
@@ -65,12 +52,7 @@ export const logout = async (req, res, next) => {
 
         await user.save();
 
-        res.status(200).send({
-            status: 200,
-            statusText: 'Ok',
-            data: {},
-            message: "Logout successfully",
-        });
+        res.status(200).send(new SuccessResponse(200, 'Ok', "Logout successfully", {}));
 
     } catch (error) {
         error.status = 500;

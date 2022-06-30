@@ -5,16 +5,14 @@ import { updatePriceAction } from "../../actions/cart.action";
 import { CartContext } from "../../contexts/Cart.context";
 import './quantity-btn.styles.css';
 
-const QuantityBtn = (props) => {
-    const cartContextValue = useContext(CartContext);
-    const [quantityState, setQuantityState] = useState(props.value);
-
-    const bookPageSetQuantityState = props.setQuantityState;
+const QuantityBtn = ({value, bookID, page, updateQuantity, setQuantityState: bookPageSetQuantityState}) => {
+    const {cartState: cart, dispatchCartState} = useContext(CartContext);
+    const [quantityState, setQuantityState] = useState(value);
 
     const handleIncrement = () => {
         const quantity = quantityState + 1;
 
-        if(props.page === 'book') {
+        if(page === 'book') {
             if(quantity <= 10) {
                 setQuantityState(quantity);
                 bookPageSetQuantityState(quantity);
@@ -22,20 +20,17 @@ const QuantityBtn = (props) => {
             return;
         }
 
-        const cart = cartContextValue.cartState;
-        const bookID = props.bookID;
-
         if(quantity <= 10) {
             setQuantityState(quantity);
-            cartContextValue.dispatchCartState(updatePriceAction(cart, bookID, quantity, '+'));
-            props.updateQuantity(bookID, quantity);
+            dispatchCartState(updatePriceAction(cart, bookID, quantity, '+'));
+            updateQuantity(bookID, quantity);
         }
     };
 
     const handleDecrement = () => {
         const quantity = quantityState - 1;
 
-        if(props.page === 'book') {
+        if(page === 'book') {
             if(quantity >= 1) {
                 setQuantityState(quantity);
                 bookPageSetQuantityState(quantity);
@@ -43,13 +38,10 @@ const QuantityBtn = (props) => {
             return;
         }
 
-        const cart = cartContextValue.cartState;
-        const bookID = props.bookID;
-
         if(quantity >= 1) {
             setQuantityState(quantity);
-            cartContextValue.dispatchCartState(updatePriceAction(cart, bookID, quantity, '-'));
-            props.updateQuantity(bookID, quantity);
+            dispatchCartState(updatePriceAction(cart, bookID, quantity, '-'));
+            updateQuantity(bookID, quantity);
         }
     };
 

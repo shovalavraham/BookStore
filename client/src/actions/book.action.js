@@ -1,11 +1,6 @@
 const bookActionTypes  = {
     LOAD_BOOK: 'LOAD_BOOK',
-    UPDATE_TITLE: 'UPDATE_TITLE',
-    UPDATE_AUTHOR: 'UPDATE_AUTHOR',
-    UPDATE_BOOK_COVER: 'UPDATE_BOOK_COVER',
-    UPDATE_DESCRIPTION: 'UPDATE_DESCRIPTION',
-    UPDATE_PAGE: 'UPDATE_PAGE',
-    UPDATE_PRICE: 'UPDATE_PRICE',
+    UPDATE_FORM_FIELD: 'UPDATE_FORM_FIELD',
     RESET_BOOK: 'RESET_BOOK',
 };
 
@@ -20,13 +15,14 @@ export const loadBookAction = (value) => {
     return action;
 };
 
-export const updateAction = (type, value, isValid, message) => {
+export const updateAction = (value, isValid, message, field) => {
     const action = {
-        type: type,
+        type: bookActionTypes.UPDATE_FORM_FIELD,
         payload: {
             value: value,
             isValid: isValid,
             message: message,
+            field: field
         },
     };
 

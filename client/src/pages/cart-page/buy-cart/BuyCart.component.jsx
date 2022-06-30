@@ -3,7 +3,6 @@ import { useContext } from "react";
 import { checkoutCartAction } from "../../../actions/cart.action";
 import { AuthContext } from "../../../contexts/Auth.context";
 import { CartContext } from "../../../contexts/Cart.context";
-import environments from "../../../environments/environments";
 import { checkout } from "../../../services/cart.service";
 import './buy-cart.styles.css';
 
