@@ -14,7 +14,7 @@ import { getCart, updateCart, updateQuantity } from "../../../services/cart.serv
 const CartContainer = () => {
     const navigate = useNavigate();
     const authContextValue = useContext(AuthContext);
-    const cartContextValue = useContext(CartContext);
+    const {cartState, dispatchCartState} = useContext(CartContext);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -31,7 +31,7 @@ const CartContainer = () => {
                 const response = await getCart(token);
                 const cart = response.data;
 
-                cartContextValue.dispatchCartState(initCartAction(cart));
+                dispatchCartState(initCartAction(cart));
                 
                 setTimeout(() => {
                     setIsLoading(false);
@@ -41,7 +41,7 @@ const CartContainer = () => {
                 alert("Something went wrong!");
             }
         };
-
+    
         getUserCart();
         
     }, []);
@@ -57,8 +57,8 @@ const CartContainer = () => {
            const response = await updateCart(token, bookID);
            const cart = response.data;
 
-           const price = cartContextValue.cartState.price;
-           cartContextValue.dispatchCartState(updateCartAction(cart, price, bookPrice, bookQuantity));
+           const price = cartState.price;
+           dispatchCartState(updateCartAction(cart, price, bookPrice, bookQuantity));
 
         } catch (error) {
             alert("Something went wrong!");
@@ -80,7 +80,7 @@ const CartContainer = () => {
         <Loader/>
     ) : (
         <div className="cart-container">
-            {cartContextValue.cartState.books.map((book) => {
+            {cartState.books.map((book) => {
                 return (
                     <div className="cart-book-container" key={book.bookID._id}>
                         <BookDetails id={book.bookID._id} title={book.bookID.title} author={book.bookID.author} bookCover={book.bookID.bookCover}/>

@@ -36,6 +36,7 @@ export const createBook = async (req, res, next) => {
     const book = new Book(data);
 
     try {
+        if(!book) throw new Error();
         await book.save();
 
         res.status(201).send(new SuccessResponse(200, 'Created', "Book was created successfully", book));
@@ -55,7 +56,7 @@ export const updateBook = async (req, res, next) => {
     try {
         if(!bookID || !data) throw new Error();
         
-        await Book.findByIdAndUpdate(bookID, {...data});
+        await Book.findByIdAndUpdate(bookID, data);
 
         res.status(202).send(new SuccessResponse(200, 'Accepted', "Book was updated successfully", {}));
 

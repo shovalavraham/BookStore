@@ -65,10 +65,17 @@ const AdminDashboardPage = () => {
 
     const handleUpdateBook = async () => {
         const token = adminAuthContextValue.adminToken;
-        const data = bookState.values;
+        const bookStateValues = bookState.values;
         const validities = bookState.validities;
         
-        if(JSON.stringify(originalBookState) === JSON.stringify(data)) {
+        const data = {_id: bookStateValues._id};
+        for (let keys in originalBookState) {
+            if (originalBookState[keys] !== bookStateValues[keys]) {
+              data[keys] = bookStateValues[keys];
+            }
+        }
+
+        if(Object.keys(data).length === 1) {
             handleClose();
             return;
         }
@@ -85,8 +92,8 @@ const AdminDashboardPage = () => {
                 await updateBook(token, data);
                 
                 const updatedBooks = booksState.map(book => {
-                    if(book._id === data._id)
-                        return data;
+                    if(book._id === bookStateValues._id)
+                        return bookStateValues;
                     return book;
                 });
                 setBooksState(updatedBooks);

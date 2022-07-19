@@ -4,13 +4,19 @@ import { SuccessResponse } from '../models/response.model.js';
 
 export const createUser = async (req, res, next) => {
     const data = req.body;
-    const user = new User(data);
-    const cart = new Cart({
-        ownerID: user._id,
-    });
 
     try {
+        if(!data) throw new Error();
+
+        const user = new User(data);
+
+        if(!user) throw new Error();
+        const cart = new Cart({
+            ownerID: user._id,
+        });
+
         const token = await user.generateAuthToken();
+
         await user.save();
         await cart.save();
         
@@ -31,6 +37,8 @@ export const login = async (req, res, next) => {
         if(!email || !password) throw new Error('Unable to loign');
 
         const user = await User.findUserByEmailAndPassword(email, password);
+
+        if(!user) throw new Error();
         const token = await user.generateAuthToken();
 
         res.status(200).send(new SuccessResponse(200, 'Ok', "Login successfully", {user, token}));

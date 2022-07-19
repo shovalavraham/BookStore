@@ -8,7 +8,7 @@ export const loadBookAction = (value) => {
     const action = {
         type: bookActionTypes.LOAD_BOOK,
         payload: {
-            value: value,
+            value,
         },
     };
 
@@ -19,10 +19,10 @@ export const updateAction = (value, isValid, message, field) => {
     const action = {
         type: bookActionTypes.UPDATE_FORM_FIELD,
         payload: {
-            value: value,
-            isValid: isValid,
-            message: message,
-            field: field
+            value,
+            isValid,
+            message,
+            field
         },
     };
 

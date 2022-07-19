@@ -11,6 +11,7 @@ import isStrongPassword from "validator/lib/isStrongPassword";
 import { AdminAuthContext } from "../../../contexts/AdminAuth.context";
 import { signup } from "../../../services/user.service";
 import { adminLogout } from "../../../services/admin.service";
+import { SignupFormData } from "../../../models/signup-form.model";
 
 const SignupForm = () => {
     const navigate = useNavigate();
@@ -96,13 +97,8 @@ const SignupForm = () => {
             signupValidities.email &&
             signupValidities.password &&
             signupValidities.repeatPassword) {
-
-            const data = {
-                firstName: signupValues.firstname,
-                lastName: signupValues.lastname,
-                email: signupValues.email,
-                password: signupValues.password,
-            }
+            
+                const data = new SignupFormData(signupValues.firstname, signupValues.lastname, signupValues.email, signupValues.password);
 
             try {
                 const response = await signup(data);

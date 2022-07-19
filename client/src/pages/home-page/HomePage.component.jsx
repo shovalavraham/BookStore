@@ -8,14 +8,12 @@ import { getAllBooks } from '../../services/book.service';
 const HomePage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [booksState, setBooksState] = useState(null);
-    //const [filterdBooksState, setFilterdBooksState] = useState(null);
 
     useEffect(() => {
         const getBooks = async () => {
             try {
                 const response = await getAllBooks();
                 setBooksState(response.data);
-                //setFilterdBooksState(responseObj.data);
 
                 setTimeout(() => {
                     setIsLoading(false);
@@ -24,31 +22,29 @@ const HomePage = () => {
             } catch (error) {
                 alert("Something went wrong!");
             }
-        };
+        };   
 
         getBooks();
 
     }, []);
 
-    {/*const handleFilter = (event) => {
-        const title = event.target.value.trim().toLowerCase();
-        const filterdBooks = booksState.filter(book => book.title.toLowerCase().includes(title));
-        setFilterdBooksState(filterdBooks);
-    }*/}
-
     return isLoading ? (
         <Loader/>
     ) : (
         <main className='home-page'>
-            {/*<input className="form-input" onInput={handleFilter}/>*/}
-            
-            <div className='books-container'>
-                {booksState.map((book) => {
-                    const {_id: id, title, author, bookCover} = book;
-                    return (
-                        <BookCard key={id} title={title} author={author} bookCover={bookCover} id={id}/>
-                    );
-                })}
+            <div className='home-page-container'>
+                <h2 className="books-title">Books</h2>
+
+                <hr />
+
+                <div className='books-container'>
+                    {booksState.map((book) => {
+                        const {_id: id, title, author, bookCover} = book;
+                        return (
+                            <BookCard key={id} title={title} author={author} bookCover={bookCover} id={id}/>
+                        );
+                    })}
+                </div>
             </div>
         </main>
     );

@@ -5,7 +5,7 @@ footer {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color:#22c165;
+    background-color:var(--bg-primary);
     color: white;
 }
 

@@ -26,7 +26,11 @@ export const updateCart = async (req, res, next) => {
 
     try {
         const cart = await Cart.findOne({ownerID: userID});
+        if(!cart) throw new Error();
+
         const bookObj = cart.books.find(book => book.bookID.toString() === bookID);
+        if(!bookObj) throw new Error();
+
         cart.books = cart.books.filter(bookDoc => bookDoc._id !== bookObj._id);
 
         await cart.populate('books.bookID');
@@ -49,6 +53,8 @@ export const addBookToCart = async (req, res, next) => {
     
     try {
         const cart = await Cart.findOne({ownerID: user._id});
+        if(!cart) throw new Error();
+
         cart.books.push({bookID: bookID, quantity: quantity});
 
         await cart.populate('books.bookID');
@@ -70,6 +76,8 @@ export const buyCart = async (req, res, next) => {
 
     try {
         const cart = await Cart.findOne({ownerID: userID});
+        if(!cart) throw new Error();
+
         cart.books = [];
         await cart.save();
 
@@ -89,7 +97,11 @@ export const updateQuantity = async (req, res, next) => {
 
     try {
         const cart = await Cart.findOne({ownerID: userID});
+        if(!cart) throw new Error();
+
         const book = cart.books.find(book => book.bookID.toString() === bookID);
+        if(!book) throw new Error();
+
         book.quantity = quantity;
 
         await cart.save();
